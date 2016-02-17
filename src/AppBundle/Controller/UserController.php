@@ -6,18 +6,18 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
-class HomepageController extends Controller
+class UserController extends Controller
 {
     /**
-     * @Route("/", name="homepage")
+     * @Route("/auth", name="auth")
      * @Method("GET")
      */
-    public function indexAction()
+    public function authAction()
     {
     	if ($this->get('security.authorization_checker')->isGranted('IS_AUTHENTICATED_FULLY')) {
     		return $this->redirectToRoute('user');
     	}
 
-        return $this->render('AppBundle:Homepage:index.html.twig');
+        return;
     }
 }
