@@ -14,7 +14,7 @@ class HomepageController extends Controller
      */
     public function indexAction()
     {
-    	if ($this->get('security.authorization_checker')->isGranted('IS_AUTHENTICATED_FULLY')) {
+    	if ($this->get('security.authorization_checker')->isGranted('ROLE_STEAM_USER')) {
     		return $this->redirectToRoute('user');
     	}
 

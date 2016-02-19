@@ -3,11 +3,12 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @ORM\Entity
  */
-class User
+class User implements UserInterface
 {
 	/**
 	 * @ORM\Column(type="bigint")
@@ -34,6 +35,11 @@ class User
 	 * @ORM\Column(type="datetime", name="updated_at", nullable=true)
 	 */
 	protected $updatedAt;
+
+    /**
+     * @ORM\Column(type="decimal", scale=4, nullable=true)
+     */
+    protected $rating;
 
 	/**
 	 * Set current date to `created_at` column
@@ -162,4 +168,23 @@ class User
     {
         return $this->updatedAt;
     }
+
+    public function getUsername()
+    {
+        return $this->getSteamid();
+    }
+
+    public function getRoles()
+    {
+        return ['ROLE_STEAM_USER'];
+    }
+
+    public function eraseCredentials()
+    {}
+
+    public function getPassword()
+    {}
+
+    public function getSalt()
+    {}
 }

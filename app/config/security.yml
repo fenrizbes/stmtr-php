@@ -1,12 +1,17 @@
 security:
     providers:
-        in_memory:
-            memory: ~
+        main:
+            entity:
+                class:    AppBundle:User
+                property: steamid
 
     firewalls:
         dev:
-            pattern: ^/(_(profiler|wdt)|css|images|js)/
+            pattern:  ^/(_(profiler|wdt)|css|images|js)/
             security: false
 
         main:
-            anonymous: ~
+            pattern:   ^/
+            security:  true
+            anonymous: true
+            stateless: false

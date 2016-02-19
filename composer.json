@@ -28,7 +28,9 @@
         "sensio/framework-extra-bundle": "^3.0.2",
         "incenteev/composer-parameter-handler": "^2.0",
         "symfony/assetic-bundle": "^2.7",
-        "doctrine/doctrine-migrations-bundle": "^1.0"
+        "doctrine/doctrine-migrations-bundle": "^1.0",
+        "lightopenid/lightopenid": "dev-master",
+        "mrclay/minify": "2.2.*"
     },
     "require-dev": {
         "sensio/generator-bundle": "^3.0",
