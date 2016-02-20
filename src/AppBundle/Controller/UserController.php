@@ -94,6 +94,9 @@ class UserController extends Controller
             return $this->redirectToRoute('homepage');
         }
         
-        dump($this->getUser());exit;
+        dump($this->getUser()->getSteamid());
+        dump($this->get('steam_api')->getUserData(
+            $this->getUser()->getSteamid()
+        ));exit;
     }
 }

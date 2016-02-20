@@ -5,7 +5,6 @@ imports:
 
 parameters:
     locale: en
-    steam_identity: http://steamcommunity.com/openid
 
 framework:
     #esi:             ~

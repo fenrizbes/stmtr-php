@@ -169,22 +169,37 @@ class User implements UserInterface
         return $this->updatedAt;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getUsername()
     {
         return $this->getSteamid();
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getRoles()
     {
         return ['ROLE_STEAM_USER'];
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function eraseCredentials()
     {}
 
+    /**
+     * {@inheritdoc}
+     */
     public function getPassword()
     {}
 
+    /**
+     * {@inheritdoc}
+     */
     public function getSalt()
     {}
 }

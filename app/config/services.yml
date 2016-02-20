@@ -1,3 +1,8 @@
 parameters:
+    steam_identity: http://steamcommunity.com/openid
+    steam_api_url:  http://api.steampowered.com
 
 services:
+    steam_api:
+        class:     AppBundle\Service\SteamAPIService
+        arguments: [ %steam_api_url%, %steam_api_key% ]
