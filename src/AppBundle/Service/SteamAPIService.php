@@ -2,6 +2,9 @@
 
 namespace AppBundle\Service;
 
+use AppBundle\Exception\SteamRequestException;
+use AppBundle\Exception\SteamResponseException;
+
 class SteamAPIService
 {
     /**
@@ -38,26 +41,33 @@ class SteamAPIService
     /**
      * Return user's profile's data
      *
-     * @param int|array $steamids
+     * @param int|array $steamid
      *
      * @return array
+     *
+     * @throws SteamResponseException
      */
-	public function getUserData($steamids)
+	public function getUserData($steamid)
 	{
-		if (is_array($steamids)) {
-			$steamids = implode(',', $steamids);
-		}
-
-		$data = $this->sendRequest(static::SCOPE_USER, 'GetPlayerSummaries', 2, array(
-			'steamids' => $steamids
-		));
-
-        if (!array_key_exists('players', $data) || !count($data['players'])) {
-            // TO DO
+		if (is_array($steamid)) {
+			$steamids = implode(',', $steamid);
+		} else {
+            $steamids = $steamid;       
         }
 
-        if (count($data['players']) == 1) {
-            $data = $data['players'][0];
+		$data = $this->sendRequest(static::SCOPE_USER, 'GetPlayerSummaries', 2, [
+			'steamids' => $steamids
+		], [
+            'response',
+            'players'
+        ]);
+
+        if (!count($data)) {
+            throw new SteamResponseException('Empty Steam API response');
+        }
+
+        if (!is_array($steamid)) {
+            $data = $data[0];
         }
 
         return $data;
@@ -69,12 +79,19 @@ class SteamAPIService
      * @param int $steamid
      *
      * @return array
+     *
+     * @throws SteamResponseException
+     *
+     * @throws SteamResponseException
      */
     public function getUserGames($steamid)
     {
-        return $this->sendRequest(static::SCOPE_PLAYER, 'GetOwnedGames', 1, array(
+        return $this->sendRequest(static::SCOPE_PLAYER, 'GetOwnedGames', 1, [
             'steamid' => $steamid
-        ));
+        ], [
+            'response',
+            'games'
+        ]);
 	}
 
     /**
@@ -87,10 +104,13 @@ class SteamAPIService
      */
     public function getUserAchievements($steamid, $appid)
     {
-        return $this->sendRequest(static::SCOPE_USER_STATS, 'GetPlayerAchievements', 1, array(
+        return $this->sendRequest(static::SCOPE_USER_STATS, 'GetPlayerAchievements', 1, [
             'steamid' => $steamid,
             'appid'   => $appid
-        ));
+        ], [
+            'playerstats',
+            'achievements'
+        ]);
     }
 
     /**
@@ -102,9 +122,12 @@ class SteamAPIService
      */
     public function getGameAchievements($gameid)
     {
-        return $this->sendRequest(static::SCOPE_USER_STATS, 'GetGlobalAchievementPercentagesForApp', 2, array(
+        return $this->sendRequest(static::SCOPE_USER_STATS, 'GetGlobalAchievementPercentagesForApp', 2, [
             'gameid' => $gameid
-        ));
+        ], [
+            'achievementpercentages',
+            'achievements'
+        ]);
     }
 
     /**
@@ -114,32 +137,48 @@ class SteamAPIService
      * @param string $action
      * @param int $version
      * @param array $parameters
+     * @param array $traverse
      *
      * @return array
+     *
+     * @throws SteamRequestException
+     * @throws SteamResponseException
      */
-	protected function sendRequest($scope, $action, $version, $parameters = array())
+	protected function sendRequest($scope, $action, $version, $parameters = [], $traverse = [])
 	{
-		$parameters = array_merge(array(
+        if (!is_array($parameters) || !count($parameters)) {
+            throw new SteamRequestException('Insufficient Steam API request parameters');
+        }
+
+		$parameters = array_merge([
 			'key' => $this->apiKey
-		), $parameters);
+		], $parameters);
 
 		$parameters = http_build_query($parameters);
 		$version    = sprintf('v%04d', $version);
 
 		$url = $this->apiUrl .'/'. $scope .'/'. $action .'/'. $version .'/?'. $parameters;
 
-        // TO DO: Handle errors and throw exceptions
-
         $response = @file_get_contents($url);
         if (false === $response) {
-            #throw exception
+            throw new SteamResponseException('Unable to read Steam API response');
         }
 
 		$data = @json_decode($response, true);
-        if (!is_array($data) || !array_key_exists('response', $data)) {
-            #throw exception
+        if (!is_array($data)) {
+            throw new SteamResponseException('Unreadable Steam API response');
         }
 
-        return $data['response'];
+        if (is_array($traverse)) {
+            foreach ($traverse as $name) {
+                if (!array_key_exists($name, $data)) {
+                    throw new SteamResponseException('Invalid Steam API response');
+                }
+
+                $data = $data[$name];
+            }
+        }
+
+        return $data;
 	}
 }
