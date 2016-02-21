@@ -41,7 +41,7 @@ class SteamAPIService
     /**
      * Return user's profile's data
      *
-     * @param int|array $steamid
+     * @param string|array $steamid
      *
      * @return array
      *
@@ -76,7 +76,7 @@ class SteamAPIService
     /**
      * Return a list of user's games
      *
-     * @param int $steamid
+     * @param string $steamid
      *
      * @return array
      *
@@ -97,7 +97,7 @@ class SteamAPIService
     /**
      * Return a list of user's achievements for a specified game
      *
-     * @param int $steamid
+     * @param string $steamid
      * @param int $appid
      *
      * @return array

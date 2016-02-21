@@ -4,6 +4,7 @@ namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * @ORM\Entity
@@ -37,16 +38,42 @@ class User implements UserInterface
 	protected $updatedAt;
 
     /**
-     * @ORM\Column(type="decimal", scale=4, nullable=true)
+     * @ORM\Column(type="decimal", precision=15, scale=4, nullable=true)
      */
     protected $rating;
 
+    /**
+     * @ORM\Column(type="boolean", name="is_being_handled")
+     */
+    protected $isBeingHandled = false;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="Game")
+     * @ORM\JoinTable(
+     *      name="user_game",
+     *      joinColumns={
+     *          @ORM\JoinColumn(name="steamid", referencedColumnName="steamid", onDelete="CASCADE")
+     *      },
+     *      inverseJoinColumns={
+     *          @ORM\JoinColumn(name="gameid", referencedColumnName="gameid", onDelete="CASCADE")
+     *      }
+     * )
+     */
+    protected $games;
+
+    /**
+     * @ORM\OneToMany(targetEntity="UserAchievement", mappedBy="user")
+     */
+    protected $achievements;
+
 	/**
-	 * Set current date to `created_at` column
+	 * Initialize default values
 	 */
 	public function __construct()
 	{
-		$this->setCreatedAt(new \DateTime());
+		$this->createdAt    = new \DateTime();
+        $this->games        = new ArrayCollection();
+        $this->achievements = new ArrayCollection();
 	}
 
     /**
@@ -167,6 +194,122 @@ class User implements UserInterface
     public function getUpdatedAt()
     {
         return $this->updatedAt;
+    }
+
+    /**
+     * Set rating
+     *
+     * @param string $rating
+     *
+     * @return User
+     */
+    public function setRating($rating)
+    {
+        $this->rating = $rating;
+
+        return $this;
+    }
+
+    /**
+     * Get rating
+     *
+     * @return string
+     */
+    public function getRating()
+    {
+        return $this->rating;
+    }
+
+    /**
+     * Set isBeingHandled
+     *
+     * @param boolean $isBeingHandled
+     *
+     * @return User
+     */
+    public function setIsBeingHandled($isBeingHandled)
+    {
+        $this->isBeingHandled = $isBeingHandled;
+
+        return $this;
+    }
+
+    /**
+     * Get isBeingHandled
+     *
+     * @return boolean
+     */
+    public function getIsBeingHandled()
+    {
+        return $this->isBeingHandled;
+    }
+
+    /**
+     * Add game
+     *
+     * @param Game $game
+     *
+     * @return User
+     */
+    public function addGame(Game $game)
+    {
+        $this->games[] = $game;
+
+        return $this;
+    }
+
+    /**
+     * Remove game
+     *
+     * @param Game $game
+     */
+    public function removeGame(Game $game)
+    {
+        $this->games->removeElement($game);
+    }
+
+    /**
+     * Get games
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getGames()
+    {
+        return $this->games;
+    }
+
+    /**
+     * Add achievement
+     *
+     * @param serAchievement $achievement
+     *
+     * @return User
+     */
+    public function addAchievement(UserAchievement $achievement)
+    {
+        $this->achievements[] = $achievement;
+
+        return $this;
+    }
+
+    /**
+     * Remove achievement
+     *
+     * @param UserAchievement $achievement
+     */
+    public function removeAchievement(UserAchievement $achievement)
+    {
+        $this->achievements->removeElement($achievement);
+    }
+
+    /**
+     * Get achievements
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getAchievements()
+    {
+        return $this->achievements;
     }
 
     /**

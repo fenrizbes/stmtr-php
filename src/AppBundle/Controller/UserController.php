@@ -95,10 +95,10 @@ class UserController extends Controller
         }
         
         dump($this->getUser()->getSteamid());
-        dump($this->get('steam_api')->getGameAchievements(
-            //$this->getUser()->getSteamid(),
-            39500
-            //440
+        dump($this->get('steam_api')->getUserAchievements(
+            $this->getUser()->getSteamid(),
+            //39500
+            440
         ));exit;
     }
 }
