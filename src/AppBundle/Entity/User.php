@@ -9,7 +9,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 /**
  * @ORM\Entity
  */
-class User implements UserInterface
+class User implements UserInterface, \Serializable
 {
 	/**
 	 * @ORM\Column(type="bigint")
@@ -18,12 +18,12 @@ class User implements UserInterface
 	protected $steamid;
 
 	/**
-	 * @ORM\Column
+	 * @ORM\Column(nullable=true)
 	 */
 	protected $personaname;
 
 	/**
-	 * @ORM\Column
+	 * @ORM\Column(nullable=true)
 	 */
 	protected $avatar;
 
@@ -345,4 +345,40 @@ class User implements UserInterface
      */
     public function getSalt()
     {}
+
+    /**
+     * {@inheritdoc}
+     */
+    public function serialize()
+    {
+        return serialize(array(
+            $this->steamid
+        ));
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function unserialize($serizlized)
+    {
+        list($this->steamid) = unserialize($serizlized);
+    }
+
+    /**
+     * Check if the user data was updated more than 1 day ago or never been set
+     *
+     * @return bool
+     */
+    public function isOutdated()
+    {
+        if (!$this->updatedAt instanceof \DateTime) {
+            return true;
+        }
+
+        if ($this->updatedAt->modify('+1 day') < new \DateTime()) {
+            return true;
+        }
+
+        return false;
+    }
 }

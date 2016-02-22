@@ -79,10 +79,6 @@ class SteamAPIService
      * @param string $steamid
      *
      * @return array
-     *
-     * @throws SteamResponseException
-     *
-     * @throws SteamResponseException
      */
     public function getUserGames($steamid)
     {

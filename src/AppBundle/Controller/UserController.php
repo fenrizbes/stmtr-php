@@ -48,20 +48,7 @@ class UserController extends Controller
             return $this->redirectToRoute('homepage');
         }
 
-        // TO DO: move following lines to the service
-        $em = $this->getDoctrine()->getManager();
-
-        $user = $em->getRepository('AppBundle:User')->find($matches[1]);
-        
-        if (null === $user) {
-            $user = new User();
-            $user->setSteamid($id);
-            $user->setPersonaname(''); // TO DO
-            $user->setAvatar(''); // TO DO
-
-            $em->persist($user);
-            $em->flush();
-        }
+        $user = $this->get('steam_data')->getUser($matches[1]);
 
         $token = new UsernamePasswordToken($user, null, 'main', $user->getRoles());
         $this->get('security.token_storage')->setToken($token);
@@ -93,12 +80,13 @@ class UserController extends Controller
         if (!$this->get('security.authorization_checker')->isGranted('ROLE_STEAM_USER')) {
             return $this->redirectToRoute('homepage');
         }
+
+        if ($this->getUser()->isOutdated()) {
+            $this->get('steam_data')->updateUserData($this->getUser());
+
+            // TO DO: Run full update
+        }
         
-        dump($this->getUser()->getSteamid());
-        dump($this->get('steam_api')->getUserAchievements(
-            $this->getUser()->getSteamid(),
-            //39500
-            440
-        ));exit;
+        return $this->render('AppBundle:User:index.html.twig');
     }
 }

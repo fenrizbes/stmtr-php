@@ -6,3 +6,7 @@ services:
     steam_api:
         class:     AppBundle\Service\SteamAPIService
         arguments: [ %steam_api_url%, %steam_api_key% ]
+
+    steam_data:
+        class:     AppBundle\Service\SteamDataService
+        arguments: [ '@doctrine.orm.entity_manager', '@steam_api' ]
