@@ -1,5 +1,27 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-	{% block content %}{% endblock %}
+    <div class="site-wrapper">
+        <div class="header">
+            <strong>stea<span class="text-success">meter</span>.</strong>
+        </div>
+
+        <div class="site-content">
+            <div class="contaner">
+                <div class="jumbotron">
+                    {% block content %}{% endblock %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer">
+        <div class="pull-left">
+            &copy; steameter.
+        </div>
+
+        <div class="pull-right">
+            powered by <a href="http://steampowered.com" target="_blank">steam</a>.
+        </div>
+    </div>
 {% endblock %}

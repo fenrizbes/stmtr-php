@@ -2,12 +2,36 @@
 <html>
     <head>
         <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
         <title>{% block title %}Steameter{% endblock %}</title>
-        {% block stylesheets %}{% endblock %}
+
+        {% block stylesheets %}
+            {% stylesheets
+                'bundles/app/css/lib/bootstrap.min.css'
+                'bundles/app/css/style.css'
+
+                filter='cssrewrite'
+                output="assetic/css/*.css"
+            %}
+                <link rel="stylesheet" href="{{ asset_url }}" />
+            {% endstylesheets %}
+        {% endblock %}
+
         <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
     </head>
     <body>
         {% block body %}{% endblock %}
-        {% block javascripts %}{% endblock %}
+
+        {% block javascripts %}
+            {% javascripts
+                'bundles/app/js/lib/jquery-2.2.1.min.js'
+                'bundles/app/js/common.js'
+
+                output="assetic/js/*.js"
+            %}
+                <script type="text/javascript" src="{{ asset_url }}"></script>
+            {% endjavascripts %}
+        {% endblock %}
     </body>
 </html>
