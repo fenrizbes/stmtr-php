@@ -1,13 +1,9 @@
 {% extends 'AppBundle::layout.html.twig' %}
 
 {% block content %}
-    <h2>
-        <img src="{{ app.user.avatar }}" />
-        {{ app.user.personaname }}
-    </h2>
-
-    <p>
-        <span class="text-success score-main">0</span>.0
-        s<span class="text-success">m</span>.
-    </p>
+    <div class="jumbotron">
+        {{ include('AppBundle:User:card.html.twig', {
+            user: app.user
+        }) }}
+    </div>
 {% endblock %}

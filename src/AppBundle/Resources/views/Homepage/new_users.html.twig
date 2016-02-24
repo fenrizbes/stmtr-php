@@ -1,0 +1,13 @@
+{% if users | length %}
+    <div class="new-users jumbotron">
+        <h2 class="text-center">
+            new gamers:
+        </h2>
+
+        {% for user in users %}
+            {{ include('AppBundle:User:card.html.twig') }}
+        {% endfor %}
+
+        <div class="clearfix"></div>
+    </div>
+{% endif %}

@@ -54,17 +54,19 @@ class SteamDataService
      *
      * @param User $user
      */
-    public function updateUserData(User $user)
+    public function updateUser(User $user)
     {
         $data = $this->steamApi->getUserData($user->getSteamid());
 
         $user
             ->setPersonaname($data['personaname'])
             ->setAvatar($data['avatar'])
-            ->setUpdatedAt(new \DateTime())
+            ->setIsBeingHandled(true)
         ;
 
         $this->em->persist($user);
         $this->em->flush();
+        
+        // TO DO: Run update command
     }
 }

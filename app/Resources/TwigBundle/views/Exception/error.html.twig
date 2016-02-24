@@ -5,15 +5,17 @@
 {% block javascripts %}{% endblock %}
 
 {% block content %}
-    <h1>{{ status_code }}.</h1>
+    <div class="jumbotron">
+        <h1>{{ status_code }}.</h1>
 
-    <p>
-        {% block text %}
-            {{ status_text }}.
-        {% endblock %}
-    </p>
+        <p>
+            {% block text %}
+                {{ status_text }}.
+            {% endblock %}
+        </p>
 
-    <p>
-        <a href="{{ path('homepage') }}">Go home</a>.
-    </p>
+        <p>
+            <a href="{{ path('homepage') }}">Go home</a>.
+        </p>
+    </div>
 {% endblock %}

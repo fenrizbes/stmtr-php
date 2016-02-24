@@ -50,11 +50,30 @@ a:visited,
     padding-right: 40px;
 }
 
-.jumbotron h2 {
+.jumbotron h4 {
     vertical-align: bottom;
+}
+
+.user-card h2 {
+    overflow: hidden;
 }
 
 .score-main {
     font-size: 46px;
     font-weight: bold;
+}
+
+.new-users .user-card {
+    float: left;
+    width: 400px;
+    margin-right: 40px;
+    margin-top: 10px;
+}
+
+.new-users .user-card h2 {
+    font-size: 25px;
+}
+
+.new-users .score-main {
+    font-size: 21px;
 }

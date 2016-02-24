@@ -20,4 +20,27 @@ class HomepageController extends Controller
 
         return $this->render('AppBundle:Homepage:index.html.twig');
     }
+
+    /**
+     * Render new users' cards
+     */
+    public function newUsersAction($limit = 4)
+    {
+        $em = $this->getDoctrine()->getEntityManager();
+
+        $users = $em
+            ->createQuery('
+                SELECT u
+                FROM AppBundle\Entity\User u
+                WHERE u.rating IS NOT NULL 
+                ORDER BY u.createdAt DESC
+            ')
+            ->setMaxResults($limit)
+            ->getResult()
+        ;
+
+        return $this->render('AppBundle:Homepage:new_users.html.twig', [
+            'users' => $users
+        ]);
+    }
 }

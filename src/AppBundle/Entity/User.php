@@ -371,14 +371,52 @@ class User implements UserInterface, \Serializable
      */
     public function isOutdated()
     {
-        if (!$this->updatedAt instanceof \DateTime) {
-            return true;
+        if ($this->isBeingHandled) {
+            return false;
         }
 
-        if ($this->updatedAt->modify('+1 day') < new \DateTime()) {
-            return true;
+        if (
+            $this->updatedAt instanceof \DateTime
+            &&
+            $this->updatedAt->modify('+1 day') > new \DateTime()
+        ) {
+            return false;
         }
 
-        return false;
+        return true;
+    }
+
+    /**
+     * Return the integer part of the rating
+     *
+     * @return integer
+     */
+    public function getRatingInteger()
+    {
+        if (null == $this->rating) {
+            return 0;
+        }
+
+        return round($this->rating);
+    }
+
+    /**
+     * Return the fractional part of the rating
+     *
+     * @return integer
+     */
+    public function getRatingFraction()
+    {
+        if (null == $this->rating) {
+            return 0;
+        }
+
+        $ratingString = (string) $this->rating;
+
+        if (false === strpos($ratingString, '.')) {
+            return 0;
+        }
+
+        return preg_replace('/^\d+\./', '', $ratingString);
     }
 }
