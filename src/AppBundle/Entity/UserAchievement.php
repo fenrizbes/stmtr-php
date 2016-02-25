@@ -22,6 +22,11 @@ class UserAchievement
     protected $steamid;
 
     /**
+     * @ORM\Column(type="datetime", name="checked_at")
+     */
+    protected $checkedAt;
+
+    /**
      * @ORM\ManyToOne(targetEntity="User", inversedBy="achievements")
      * @ORM\JoinColumn(name="steamid", referencedColumnName="steamid", onDelete="CASCADE")
      */
@@ -127,5 +132,29 @@ class UserAchievement
     public function getGameAchievement()
     {
         return $this->gameAchievement;
+    }
+
+    /**
+     * Set checkedAt
+     *
+     * @param \DateTime $checkedAt
+     *
+     * @return UserAchievement
+     */
+    public function setCheckedAt($checkedAt)
+    {
+        $this->checkedAt = $checkedAt;
+
+        return $this;
+    }
+
+    /**
+     * Get checkedAt
+     *
+     * @return \DateTime
+     */
+    public function getCheckedAt()
+    {
+        return $this->checkedAt;
     }
 }

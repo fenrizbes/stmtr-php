@@ -48,16 +48,7 @@ class User implements UserInterface, \Serializable
     protected $isBeingHandled = false;
 
     /**
-     * @ORM\ManyToMany(targetEntity="Game")
-     * @ORM\JoinTable(
-     *      name="user_game",
-     *      joinColumns={
-     *          @ORM\JoinColumn(name="steamid", referencedColumnName="steamid", onDelete="CASCADE")
-     *      },
-     *      inverseJoinColumns={
-     *          @ORM\JoinColumn(name="gameid", referencedColumnName="gameid", onDelete="CASCADE")
-     *      }
-     * )
+     * @ORM\ManyToMany(targetEntity="UserGame", mappedBy="user")
      */
     protected $games;
 
@@ -247,11 +238,11 @@ class User implements UserInterface, \Serializable
     /**
      * Add game
      *
-     * @param Game $game
+     * @param UserGame $game
      *
      * @return User
      */
-    public function addGame(Game $game)
+    public function addGame(UserGame $game)
     {
         $this->games[] = $game;
 
@@ -261,9 +252,9 @@ class User implements UserInterface, \Serializable
     /**
      * Remove game
      *
-     * @param Game $game
+     * @param UserGame $game
      */
-    public function removeGame(Game $game)
+    public function removeGame(UserGame $game)
     {
         $this->games->removeElement($game);
     }
@@ -281,7 +272,7 @@ class User implements UserInterface, \Serializable
     /**
      * Add achievement
      *
-     * @param serAchievement $achievement
+     * @param UserAchievement $achievement
      *
      * @return User
      */

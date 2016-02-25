@@ -26,6 +26,11 @@ class GameAchievement
     protected $percentage;
 
     /**
+     * @ORM\Column(type="datetime", name="checked_at")
+     */
+    protected $checkedAt;
+
+    /**
      * @ORM\ManyToOne(targetEntity="Game", inversedBy="achievements")
      * @ORM\JoinColumn(name="gameid", referencedColumnName="gameid", onDelete="CASCADE")
      */
@@ -125,5 +130,29 @@ class GameAchievement
     public function getGame()
     {
         return $this->game;
+    }
+
+    /**
+     * Set checkedAt
+     *
+     * @param \DateTime $checkedAt
+     *
+     * @return GameAchievement
+     */
+    public function setCheckedAt($checkedAt)
+    {
+        $this->checkedAt = $checkedAt;
+
+        return $this;
+    }
+
+    /**
+     * Get checkedAt
+     *
+     * @return \DateTime
+     */
+    public function getCheckedAt()
+    {
+        return $this->checkedAt;
     }
 }
