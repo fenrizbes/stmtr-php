@@ -12,14 +12,9 @@ class UserGame
     /**
      * @ORM\Column(type="bigint")
      * @ORM\Id
+     * @ORM\GeneratedValue
      */
-    protected $steamid;
-
-    /**
-     * @ORM\Column(type="integer")
-     * @ORM\Id
-     */
-    protected $gameid;
+    protected $id;
 
     /**
      * @ORM\Column(type="datetime", name="updated_at", nullable=true)
@@ -32,7 +27,7 @@ class UserGame
     protected $isBeingHandled = false;
 
     /**
-     * @ORM\Column(type="datetime", name="checked_at")
+     * @ORM\Column(type="datetime", name="checked_at", nullable=true)
      */
     protected $checkedAt;
 
@@ -44,56 +39,18 @@ class UserGame
 
     /**
      * @ORM\ManyToOne(targetEntity="Game")
-     * @ORM\JoinColumn(name="gameid", referencedColumnName="gameid")
+     * @ORM\JoinColumn(name="gameid", referencedColumnName="gameid", onDelete="CASCADE")
      */
     protected $game;
 
     /**
-     * Set steamid
-     *
-     * @param integer $steamid
-     *
-     * @return UserGame
-     */
-    public function setSteamid($steamid)
-    {
-        $this->steamid = $steamid;
-
-        return $this;
-    }
-
-    /**
-     * Get steamid
+     * Get id
      *
      * @return integer
      */
-    public function getSteamid()
+    public function getId()
     {
-        return $this->steamid;
-    }
-
-    /**
-     * Set gameid
-     *
-     * @param integer $gameid
-     *
-     * @return UserGame
-     */
-    public function setGameid($gameid)
-    {
-        $this->gameid = $gameid;
-
-        return $this;
-    }
-
-    /**
-     * Get gameid
-     *
-     * @return integer
-     */
-    public function getGameid()
-    {
-        return $this->gameid;
+        return $this->id;
     }
 
     /**

@@ -16,17 +16,12 @@ class GameAchievement
     protected $key;
 
     /**
-     * @ORM\Column(type="integer")
-     */
-    protected $gameid;
-
-    /**
      * @ORM\Column(type="decimal", precision=7, scale=4)
      */
     protected $percentage;
 
     /**
-     * @ORM\Column(type="datetime", name="checked_at")
+     * @ORM\Column(type="datetime", name="checked_at", nullable=true)
      */
     protected $checkedAt;
 
@@ -61,30 +56,6 @@ class GameAchievement
     }
 
     /**
-     * Set gameid
-     *
-     * @param integer $gameid
-     *
-     * @return GameAchievement
-     */
-    public function setGameid($gameid)
-    {
-        $this->gameid = $gameid;
-
-        return $this;
-    }
-
-    /**
-     * Get gameid
-     *
-     * @return integer
-     */
-    public function getGameid()
-    {
-        return $this->gameid;
-    }
-
-    /**
      * Set percentage
      *
      * @param string $percentage
@@ -109,30 +80,6 @@ class GameAchievement
     }
 
     /**
-     * Set game
-     *
-     * @param Game $game
-     *
-     * @return GameAchievement
-     */
-    public function setGame(Game $game = null)
-    {
-        $this->game = $game;
-
-        return $this;
-    }
-
-    /**
-     * Get game
-     *
-     * @return Game
-     */
-    public function getGame()
-    {
-        return $this->game;
-    }
-
-    /**
      * Set checkedAt
      *
      * @param \DateTime $checkedAt
@@ -154,5 +101,29 @@ class GameAchievement
     public function getCheckedAt()
     {
         return $this->checkedAt;
+    }
+
+    /**
+     * Set game
+     *
+     * @param Game $game
+     *
+     * @return GameAchievement
+     */
+    public function setGame(Game $game = null)
+    {
+        $this->game = $game;
+
+        return $this;
+    }
+
+    /**
+     * Get game
+     *
+     * @return Game
+     */
+    public function getGame()
+    {
+        return $this->game;
     }
 }

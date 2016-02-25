@@ -48,7 +48,7 @@ class User implements UserInterface, \Serializable
     protected $isBeingHandled = false;
 
     /**
-     * @ORM\ManyToMany(targetEntity="UserGame", mappedBy="user")
+     * @ORM\OneToMany(targetEntity="UserGame", mappedBy="user")
      */
     protected $games;
 

@@ -10,19 +10,14 @@ use Doctrine\ORM\Mapping as ORM;
 class UserAchievement
 {
     /**
-     * @ORM\Column
-     * @ORM\Id
-     */
-    protected $key;
-
-    /**
      * @ORM\Column(type="bigint")
      * @ORM\Id
+     * @ORM\GeneratedValue
      */
-    protected $steamid;
+    protected $id;
 
     /**
-     * @ORM\Column(type="datetime", name="checked_at")
+     * @ORM\Column(type="datetime", name="checked_at", nullable=true)
      */
     protected $checkedAt;
 
@@ -39,51 +34,37 @@ class UserAchievement
     protected $gameAchievement;
 
     /**
-     * Set key
-     *
-     * @param string $key
-     *
-     * @return UserAchievement
-     */
-    public function setKey($key)
-    {
-        $this->key = $key;
-
-        return $this;
-    }
-
-    /**
-     * Get key
-     *
-     * @return string
-     */
-    public function getKey()
-    {
-        return $this->key;
-    }
-
-    /**
-     * Set steamid
-     *
-     * @param integer $steamid
-     *
-     * @return UserAchievement
-     */
-    public function setSteamid($steamid)
-    {
-        $this->steamid = $steamid;
-
-        return $this;
-    }
-
-    /**
-     * Get steamid
+     * Get id
      *
      * @return integer
      */
-    public function getSteamid()
+    public function getId()
     {
-        return $this->steamid;
+        return $this->id;
+    }
+
+    /**
+     * Set checkedAt
+     *
+     * @param \DateTime $checkedAt
+     *
+     * @return UserAchievement
+     */
+    public function setCheckedAt($checkedAt)
+    {
+        $this->checkedAt = $checkedAt;
+
+        return $this;
+    }
+
+    /**
+     * Get checkedAt
+     *
+     * @return \DateTime
+     */
+    public function getCheckedAt()
+    {
+        return $this->checkedAt;
     }
 
     /**
@@ -132,29 +113,5 @@ class UserAchievement
     public function getGameAchievement()
     {
         return $this->gameAchievement;
-    }
-
-    /**
-     * Set checkedAt
-     *
-     * @param \DateTime $checkedAt
-     *
-     * @return UserAchievement
-     */
-    public function setCheckedAt($checkedAt)
-    {
-        $this->checkedAt = $checkedAt;
-
-        return $this;
-    }
-
-    /**
-     * Get checkedAt
-     *
-     * @return \DateTime
-     */
-    public function getCheckedAt()
-    {
-        return $this->checkedAt;
     }
 }
