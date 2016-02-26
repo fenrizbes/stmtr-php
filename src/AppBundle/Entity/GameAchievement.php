@@ -10,7 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
 class GameAchievement
 {
     /**
-     * @ORM\Column
+     * @ORM\Column(name="`key`")
      * @ORM\Id
      */
     protected $key;

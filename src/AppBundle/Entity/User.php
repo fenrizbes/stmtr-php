@@ -369,7 +369,7 @@ class User implements UserInterface, \Serializable
         if (
             $this->updatedAt instanceof \DateTime
             &&
-            $this->updatedAt->modify('+1 day') > new \DateTime()
+            $this->updatedAt > new \DateTime('-1 day')
         ) {
             return false;
         }

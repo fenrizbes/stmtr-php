@@ -6,6 +6,8 @@ use Doctrine\ORM\EntityManager;
 use AppBundle\Entity\User;
 use AppBundle\Entity\Game;
 use AppBundle\Entity\UserGame;
+use AppBundle\Entity\UserAchievement;
+use AppBundle\Entity\GameAchievement;
 
 class SteamDataService
 {
@@ -33,6 +35,7 @@ class SteamDataService
      * Find or create a user by steamid
      *
      * @param int $steamid
+     * @param bool $flush
      *
      * @return User
      */
@@ -58,6 +61,7 @@ class SteamDataService
      * Find or create a game by gameid
      *
      * @param int $gameid
+     * @param bool $flush
      *
      * @return Game
      */
@@ -82,16 +86,21 @@ class SteamDataService
     /**
      * Find or create a user-to-game association
      *
-     * @param int $steamid
-     * @param int $gameid
-     * @param bool $persist
+     * @param User|int $user
+     * @param Game|int $game
+     * @param bool $flush
      *
      * @return UserGame
      */
-    public function getUserGame($steamid, $gameid, $flush = true)
+    public function getUserGame($user, $game, $flush = true)
     {
-        $user = $this->getUser($steamid, $flush);
-        $game = $this->getGame($gameid, $flush);
+        if (!$user instanceof User) {
+            $user = $this->getUser($user, $flush);
+        }
+
+        if (!$game instanceof Game) {
+            $game = $this->getGame($game, $flush);
+        }
 
         $userGame = $this->em->getRepository('AppBundle:UserGame')->findOneBy([
             'user' => $user,
@@ -114,6 +123,41 @@ class SteamDataService
     }
 
     /**
+     * Find or create a game achievement
+     *
+     * @param Game|int $game
+     * @param string $key
+     * @param bool $flush
+     *
+     * @return UserGame
+     */
+    public function getGameAchievement($game, $key, $flush = true)
+    {
+        if (!$game instanceof Game) {
+            $game = $this->getGame($game, $flush);
+        }
+
+        $gameAchievement = $this->em->getRepository('AppBundle:GameAchievement')->findOneBy([
+            'game' => $game,
+            'key'  => $key
+        ]);
+        
+        if (!$gameAchievement instanceof GameAchievement) {
+            $gameAchievement = new GameAchievement();
+            $gameAchievement->setGame($game);
+            $gameAchievement->setKey($key);
+
+            $this->em->persist($gameAchievement);
+
+            if ($flush) {
+                $this->em->flush();
+            }
+        }
+
+        return $gameAchievement;
+    }
+
+    /**
      * Fetch and set actual user data
      *
      * @param User $user
@@ -125,7 +169,6 @@ class SteamDataService
         $user
             ->setPersonaname($data['personaname'])
             ->setAvatar($data['avatar'])
-            ->setIsBeingHandled(true)
         ;
 
         $this->em->persist($user);

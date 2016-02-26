@@ -22,11 +22,6 @@ class Game
     protected $updatedAt;
 
     /**
-     * @ORM\Column(type="boolean", name="is_being_handled")
-     */
-    protected $isBeingHandled = false;
-
-    /**
      * @ORM\OneToMany(targetEntity="GameAchievement", mappedBy="game")
      */
     protected $achievements;
@@ -85,30 +80,6 @@ class Game
     }
 
     /**
-     * Set isBeingHandled
-     *
-     * @param boolean $isBeingHandled
-     *
-     * @return Game
-     */
-    public function setIsBeingHandled($isBeingHandled)
-    {
-        $this->isBeingHandled = $isBeingHandled;
-
-        return $this;
-    }
-
-    /**
-     * Get isBeingHandled
-     *
-     * @return boolean
-     */
-    public function getIsBeingHandled()
-    {
-        return $this->isBeingHandled;
-    }
-
-    /**
      * Add achievement
      *
      * @param GameAchievement $achievement
@@ -140,5 +111,23 @@ class Game
     public function getAchievements()
     {
         return $this->achievements;
+    }
+
+    /**
+     * Check if the game was updated more than 1 day ago or never
+     *
+     * @return bool
+     */
+    public function isOutdated()
+    {
+        if (!$this->updatedAt instanceof \DateTime) {
+            return true;
+        }
+
+        if ($this->updatedAt < new \DateTime('-1 day')) {
+            return true;
+        }
+
+        return false;
     }
 }
