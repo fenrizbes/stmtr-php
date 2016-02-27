@@ -30,10 +30,10 @@ class UpdateUserGameCommand extends BaseUpdateCommand
         }
 
         $this
-            //->startUpdate()
             ->updateGameAchievements()
+            ->updateGame()
             ->updateUserAchievements()
-            //->finishUpdate()
+            ->updateUserGame()
         ;
 
         // TO DO: Run next update game command
@@ -49,41 +49,15 @@ class UpdateUserGameCommand extends BaseUpdateCommand
                 SELECT ug
                 FROM AppBundle:UserGame ug
                 WHERE ug.user = :user
-                    AND ug.isBeingHandled = :handled
                     AND (ug.updatedAt IS NULL OR ug.updatedAt < :updated)
-
             ')
             ->setParameters([
                 'user'    => $this->user,
-                'handled' => false,
                 'updated' => new \DateTime('-1 day')
             ])
             ->setMaxResults(1)
             ->getSingleResult()
         ;
-    }
-
-    protected function updateUser()
-    {
-        $this->user->setIsBeingHandled(false);
-        $this->user->setUpdatedAt(new \DateTime());
-        // TO DO: Set rating
-
-        $this->em->persist($this->user);
-        $this->em->flush();
-    }
-
-    /**
-     * @return UpdateUserGameCommand
-     */
-    protected function startUpdate()
-    {
-        $this->userGame->setIsBeingHandled(true);
-
-        $this->em->persist($this->userGame);
-        $this->em->flush();
-
-        return $this;
     }
 
     /**
@@ -112,9 +86,13 @@ class UpdateUserGameCommand extends BaseUpdateCommand
         $this->em
             ->createQuery('
                 DELETE AppBundle:GameAchievement ga
-                WHERE ga.checkedAt != :checkedAt
+                WHERE ga.game = :game
+                    AND ga.checkedAt != :checkedAt
             ')
-            ->setParameter('checkedAt', $this->checkedAt)
+            ->setParameters([
+                'game'      => $game,
+                'checkedAt' => $this->checkedAt
+            ])
             ->execute()
         ;
 
@@ -124,22 +102,96 @@ class UpdateUserGameCommand extends BaseUpdateCommand
     /**
      * @return UpdateUserGameCommand
      */
-    protected function updateUserAchievements()
+    protected function updateGame()
     {
+        $game = $this->userGame->getGame();
+        $game->setUpdatedAt(new \DateTime());
+
+        $this->em->persist($game);
+        $this->em->flush();
+
         return $this;
     }
 
     /**
      * @return UpdateUserGameCommand
      */
-    protected function finishUpdate()
+    protected function updateUserAchievements()
     {
-        $this->userGame->setIsBeingHandled(false);
+        $game = $this->userGame->getGame();
+
+        $achievementsList = $this->steamApi->getUserAchievements(
+            $this->user->getSteamid(),
+            $game->getGameid()
+        );
+
+        foreach ($achievementsList as $achievementData) {
+            if (!$achievementData['achieved']) {
+                continue;
+            }
+
+            $userAchievement = $this->steamData->getUserAchievement(
+                $this->user,
+                $game,
+                $achievementData['apiname'],
+                false
+            );
+
+            $userAchievement->setCheckedAt($this->checkedAt);
+
+            $this->em->persist($userAchievement);
+        }
+
+        $this->em->flush();
+
+        $removedAchievements = $this->em
+            ->createQuery('
+                SELECT ua
+                FROM AppBundle:UserAchievement ua
+                    JOIN ua.gameAchievement ga
+                WHERE ua.user = :user
+                    AND ua.checkedAt != :checkedAt
+                    AND ga.game = :game
+            ')
+            ->setParameters([
+                'user'      => $this->user,
+                'game'      => $game,
+                'checkedAt' => $this->checkedAt
+            ])
+            ->getResult()
+        ;
+
+        foreach ($removedAchievements as $removedAchievement) {
+            $this->em->remove($removedAchievement);
+        }
+
+        $this->em->flush();
+
+        return $this;
+    }
+
+    /**
+     * @return UpdateUserGameCommand
+     */
+    protected function updateUserGame()
+    {
         $this->userGame->setUpdatedAt(new \DateTime());
 
         $this->em->persist($this->userGame);
         $this->em->flush();
 
         return $this;
+    }
+
+    protected function updateUser()
+    {
+        $this->user->setIsBeingHandled(false);
+        $this->user->setUpdatedAt(new \DateTime());
+        $this->user->setRating(
+            $this->steamData->getRating($this->user)
+        );
+
+        $this->em->persist($this->user);
+        $this->em->flush();
     }
 }

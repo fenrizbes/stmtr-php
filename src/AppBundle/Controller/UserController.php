@@ -84,7 +84,7 @@ class UserController extends Controller
         if ($this->getUser()->isOutdated()) {
             $this->get('steam_data')->updateUser($this->getUser());
         }
-        
+
         return $this->render('AppBundle:User:index.html.twig');
     }
 }

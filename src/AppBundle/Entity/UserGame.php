@@ -6,6 +6,9 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity
+ * @ORM\Table(indexes={
+ *      @ORM\Index(name="updated_at_index", columns={"updated_at"})
+ * })
  */
 class UserGame
 {
@@ -20,11 +23,6 @@ class UserGame
      * @ORM\Column(type="datetime", name="updated_at", nullable=true)
      */
     protected $updatedAt;
-
-    /**
-     * @ORM\Column(type="boolean", name="is_being_handled")
-     */
-    protected $isBeingHandled = false;
 
     /**
      * @ORM\Column(type="datetime", name="checked_at", nullable=true)

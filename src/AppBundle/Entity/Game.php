@@ -7,6 +7,9 @@ use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * @ORM\Entity
+ * @ORM\Table(indexes={
+ *      @ORM\Index(name="updated_at_index", columns={"updated_at"})
+ * })
  */
 class Game
 {

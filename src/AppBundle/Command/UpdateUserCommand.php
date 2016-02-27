@@ -61,9 +61,13 @@ class UpdateUserCommand extends BaseUpdateCommand
         $this->em
             ->createQuery('
                 DELETE AppBundle\Entity\UserGame ug
-                WHERE ug.checkedAt != :checkedAt
+                WHERE ug.user = :user
+                    AND ug.checkedAt != :checkedAt
             ')
-            ->setParameter('checkedAt', $this->checkedAt)
+            ->setParameters([
+                'user'      => $this->user,
+                'checkedAt' => $this->checkedAt
+            ])
             ->execute()
         ;
 

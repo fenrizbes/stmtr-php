@@ -129,7 +129,7 @@ class SteamDataService
      * @param string $key
      * @param bool $flush
      *
-     * @return UserGame
+     * @return GameAchievement
      */
     public function getGameAchievement($game, $key, $flush = true)
     {
@@ -155,6 +155,68 @@ class SteamDataService
         }
 
         return $gameAchievement;
+    }
+
+    /**
+     * Find or create a user achievement
+     *
+     * @param User|int $user
+     * @param string $key
+     * @param bool $flush
+     *
+     * @return UserAchievement
+     */
+    public function getUserAchievement($user, $game, $key, $flush = true)
+    {
+        if (!$user instanceof User) {
+            $user = $this->getUser($user, $flush);
+        }
+
+        $gameAchievement = $this->getGameAchievement($game, $key, $flush);
+
+        $userAchievement = $this->em->getRepository('AppBundle:UserAchievement')->findOneBy([
+            'user'            => $user,
+            'gameAchievement' => $gameAchievement
+        ]);
+        
+        if (!$userAchievement instanceof UserAchievement) {
+            $userAchievement = new UserAchievement();
+            $userAchievement->setUser($user);
+            $userAchievement->setGameAchievement($gameAchievement);
+
+            $this->em->persist($userAchievement);
+
+            if ($flush) {
+                $this->em->flush();
+            }
+        }
+
+        return $userAchievement;
+    }
+
+    /**
+     * @param User|int $user
+     *
+     * @return float
+     */
+    public function getRating($user)
+    {
+        if (!$user instanceof User) {
+            $user = $this->getUser($user);
+        }
+
+        $result = $this->em
+            ->createQuery('
+                SELECT SUM(100 - ga.percentage)
+                FROM AppBundle:UserAchievement ua
+                    JOIN ua.gameAchievement ga
+                WHERE ua.user = :user
+            ')
+            ->setParameter('user', $user)
+            ->getSingleResult()
+        ;
+
+        return current($result);
     }
 
     /**
