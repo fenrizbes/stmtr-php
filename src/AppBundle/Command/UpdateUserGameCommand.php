@@ -120,6 +120,10 @@ class UpdateUserGameCommand extends BaseUpdateCommand
     {
         $game = $this->userGame->getGame();
 
+        if (!count($game->getAchievements())) {
+            return $this;
+        }
+
         $achievementsList = $this->steamApi->getUserAchievements(
             $this->user->getSteamid(),
             $game->getGameid()
