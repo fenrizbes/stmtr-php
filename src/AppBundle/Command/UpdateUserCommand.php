@@ -2,8 +2,6 @@
 
 namespace AppBundle\Command;
 
-use Symfony\Component\Console\Exception\RuntimeException;
-
 class UpdateUserCommand extends BaseUpdateCommand
 {
     protected function configure()
@@ -21,14 +19,9 @@ class UpdateUserCommand extends BaseUpdateCommand
      */
     protected function update()
     {
-        if ($this->user->getIsBeingHandled()) {
-            throw new RuntimeException('User is already being handled');
-        }
-
         $this
             ->persistGames()
             ->deleteRemoved()
-            ->updateUser()
         ;
 
         // TO DO: Run update game command
@@ -70,19 +63,6 @@ class UpdateUserCommand extends BaseUpdateCommand
             ])
             ->execute()
         ;
-
-        return $this;
-    }
-
-    /**
-     * @return UpdateUserCommand
-     */
-    protected function updateUser()
-    {
-        $this->user->setIsBeingHandled(true);
-
-        $this->em->persist($this->user);
-        $this->em->flush();
 
         return $this;
     }

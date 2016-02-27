@@ -29,7 +29,7 @@ class UserAchievement
 
     /**
      * @ORM\ManyToOne(targetEntity="GameAchievement")
-     * @ORM\JoinColumn(name="`key`", referencedColumnName="`key`", onDelete="CASCADE")
+     * @ORM\JoinColumn(name="`game_achievement_id", referencedColumnName="`id`", onDelete="CASCADE")
      */
     protected $gameAchievement;
 

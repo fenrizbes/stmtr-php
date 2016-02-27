@@ -44,7 +44,7 @@ class UpdateUserGameCommand extends BaseUpdateCommand
      */
     protected function getNextUserGame()
     {
-        return $this->em
+        $result = $this->em
             ->createQuery('
                 SELECT ug
                 FROM AppBundle:UserGame ug
@@ -56,8 +56,14 @@ class UpdateUserGameCommand extends BaseUpdateCommand
                 'updated' => new \DateTime('-1 day')
             ])
             ->setMaxResults(1)
-            ->getSingleResult()
+            ->getResult()
         ;
+
+        if (!count($result)) {
+            return null;
+        }
+
+        return $result[0];
     }
 
     /**
@@ -189,6 +195,10 @@ class UpdateUserGameCommand extends BaseUpdateCommand
 
     protected function updateUser()
     {
+        if (!$this->user->getIsBeingHandled()) {
+            return;
+        }
+
         $this->user->setIsBeingHandled(false);
         $this->user->setUpdatedAt(new \DateTime());
         $this->user->setRating(

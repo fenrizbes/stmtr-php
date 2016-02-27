@@ -231,6 +231,7 @@ class SteamDataService
         $user
             ->setPersonaname($data['personaname'])
             ->setAvatar($data['avatar'])
+            ->setIsBeingHandled(true)
         ;
 
         $this->em->persist($user);

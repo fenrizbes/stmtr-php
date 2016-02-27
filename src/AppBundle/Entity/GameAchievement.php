@@ -6,12 +6,21 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity
+ * @ORM\Table(indexes={
+ *      @ORM\Index(name="achievement_key_index", columns={"`key`"})
+ * })
  */
 class GameAchievement
 {
     /**
-     * @ORM\Column(name="`key`")
+     * @ORM\Column(type="bigint")
      * @ORM\Id
+     * @ORM\GeneratedValue
+     */
+    protected $id;
+
+    /**
+     * @ORM\Column(name="`key`")
      */
     protected $key;
 
@@ -30,6 +39,16 @@ class GameAchievement
      * @ORM\JoinColumn(name="gameid", referencedColumnName="gameid", onDelete="CASCADE")
      */
     protected $game;
+
+    /**
+     * Get id
+     *
+     * @return integer
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
 
     /**
      * Set key

@@ -6,7 +6,7 @@
 
     {% if app.request.get('_route') != 'user' or not user.isBeingHandled %}
         <p>
-            <span class="text-success score-main">{{ user.ratingInteger }}</span>.{{ user.ratingFraction }}
+            <span class="text-success score-main">{{ user.ratingInteger | number_format }}</span>.{{ user.ratingFraction }}
             s<span class="text-success">m</span>.
         </p>
     {% else %}
