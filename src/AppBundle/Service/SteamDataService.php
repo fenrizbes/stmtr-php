@@ -8,6 +8,7 @@ use AppBundle\Entity\Game;
 use AppBundle\Entity\UserGame;
 use AppBundle\Entity\UserAchievement;
 use AppBundle\Entity\GameAchievement;
+use Doctrine\Common\Collections\Criteria;
 
 class SteamDataService
 {
@@ -217,6 +218,54 @@ class SteamDataService
         ;
 
         return current($result);
+    }
+
+    /**
+     * Return information about a current updating proggress
+     *
+     * @param User|int $user
+     *
+     * @return array
+     */
+    public function getUserProgress($user)
+    {
+        if (!$user instanceof User) {
+            $user = $this->getUser($user);
+        }
+
+        $data = [
+            'in_progress' => $user->getIsBeingHandled(),
+            'status'      => 'games',
+            'percentage'  => 0
+        ];
+
+        if (!$data['in_progress']) {
+            $data['status'] = 'finished';
+
+            return $data;
+        }
+
+        $totalGames = $user->getGames()->count();
+
+        $criteria = Criteria::create()
+            ->where(
+                Criteria::expr()->gt('updatedAt', new \DateTime('-1 day'))
+            )
+        ;
+
+        $updatedGames = $user
+            ->getGames()
+            ->matching($criteria)
+            ->count()
+        ;
+
+        $data['percentage'] = $updatedGames * 100 / $totalGames;
+
+        if ($data['percentage'] > 0) {
+            $data['status'] = 'achievements';
+        }
+
+        return $data;
     }
 
     /**

@@ -6,12 +6,11 @@
 
     {% if app.request.get('_route') != 'user' or not user.isBeingHandled %}
         <p>
-            <span class="text-success score-main">{{ user.ratingInteger | number_format }}</span>.{{ user.ratingFraction }}
-            s<span class="text-success">m</span>.
+            {{ include('AppBundle:User:rating.html.twig') }}
         </p>
     {% else %}
-        <p id="user-progress">
-            
+        <p id="user-progress" data-url="{{ path('user_progress') }}">
+            {{ render(controller('AppBundle:User:progress')) }}
         </p>
     {% endif %}
 </div>

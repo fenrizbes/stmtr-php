@@ -3,6 +3,8 @@
 namespace AppBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -86,5 +88,27 @@ class UserController extends Controller
         }
 
         return $this->render('AppBundle:User:index.html.twig');
+    }
+
+    /**
+     * @Route("/user/progress", name="user_progress")
+     * @Method("GET")
+     */
+    public function progressAction(Request $request)
+    {
+        $data = $this->get('steam_data')->getUserProgress(
+            $this->getUser()
+        );
+
+        $view = $this->renderView('AppBundle:User:progress.html.twig', $data);
+
+        if ($request->isXmlHttpRequest()) {
+            return new JsonResponse([
+                'view' => $view,
+                'stop' => !$data['in_progress']
+            ]);
+        }
+
+        return new Response($view);
     }
 }
