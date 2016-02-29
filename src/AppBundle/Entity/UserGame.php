@@ -76,30 +76,6 @@ class UserGame
     }
 
     /**
-     * Set isBeingHandled
-     *
-     * @param boolean $isBeingHandled
-     *
-     * @return UserGame
-     */
-    public function setIsBeingHandled($isBeingHandled)
-    {
-        $this->isBeingHandled = $isBeingHandled;
-
-        return $this;
-    }
-
-    /**
-     * Get isBeingHandled
-     *
-     * @return boolean
-     */
-    public function getIsBeingHandled()
-    {
-        return $this->isBeingHandled;
-    }
-
-    /**
      * Set checkedAt
      *
      * @param \DateTime $checkedAt

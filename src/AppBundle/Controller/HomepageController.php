@@ -26,7 +26,7 @@ class HomepageController extends Controller
      */
     public function newUsersAction($limit = 4)
     {
-        $em = $this->getDoctrine()->getEntityManager();
+        $em = $this->getDoctrine()->getManager();
 
         $users = $em
             ->createQuery('

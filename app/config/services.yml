@@ -9,4 +9,4 @@ services:
 
     steam_data:
         class:     AppBundle\Service\SteamDataService
-        arguments: [ '@doctrine.orm.entity_manager', '@steam_api' ]
+        arguments: [ '@doctrine.orm.entity_manager', '@steam_api', %console_path% ]

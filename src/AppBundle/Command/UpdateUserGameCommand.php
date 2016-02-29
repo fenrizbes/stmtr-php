@@ -36,7 +36,7 @@ class UpdateUserGameCommand extends BaseUpdateCommand
             ->updateUserGame()
         ;
 
-        // TO DO: Run next update game command
+        $this->steamData->runUpdateCommand($this->user, 'game');
     }
 
     /**
@@ -82,25 +82,11 @@ class UpdateUserGameCommand extends BaseUpdateCommand
         foreach ($achievementsList as $achievementData) {
             $gameAchievement = $this->steamData->getGameAchievement($game, $achievementData['name'], false);
             $gameAchievement->setPercentage($achievementData['percent']);
-            $gameAchievement->setCheckedAt($this->checkedAt);
 
             $this->em->persist($gameAchievement);
         }
 
         $this->em->flush();
-
-        $this->em
-            ->createQuery('
-                DELETE AppBundle:GameAchievement ga
-                WHERE ga.game = :game
-                    AND ga.checkedAt != :checkedAt
-            ')
-            ->setParameters([
-                'game'      => $game,
-                'checkedAt' => $this->checkedAt
-            ])
-            ->execute()
-        ;
 
         return $this;
     }

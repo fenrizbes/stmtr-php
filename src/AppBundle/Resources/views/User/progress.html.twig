@@ -1,7 +1,7 @@
 {% if status == 'games' %}
     Updating the game list<img src="{{ asset('bundles/app/images/ball.gif') }}">
 {% elseif status == 'achievements' %}
-    Updating achievements: {{ percentage | round }}%<img src="{{ asset('bundles/app/images/ball.gif') }}">
+    Updating achievements: {{ percentage | round(1) }}%<img src="{{ asset('bundles/app/images/ball.gif') }}">
 {% else %}
     {{ include('AppBundle:User:rating.html.twig', {
         user: app.user

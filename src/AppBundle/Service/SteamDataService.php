@@ -23,13 +23,19 @@ class SteamDataService
     protected $steamApi;
 
     /**
+     * @var string
+     */
+    protected $consolePath;
+
+    /**
      * @param EntityManager $em
      * @param SteamAPIService $steamApi
      */
-    public function __construct(EntityManager $em, SteamAPIService $steamApi)
+    public function __construct(EntityManager $em, SteamAPIService $steamApi, $consolePath)
     {
-        $this->em       = $em;
-        $this->steamApi = $steamApi;
+        $this->em          = $em;
+        $this->steamApi    = $steamApi;
+        $this->consolePath = $consolePath;
     }
 
     /**
@@ -247,6 +253,10 @@ class SteamDataService
 
         $totalGames = $user->getGames()->count();
 
+        if (!$totalGames) {
+            return $data;
+        }
+
         $criteria = Criteria::create()
             ->where(
                 Criteria::expr()->gt('updatedAt', new \DateTime('-1 day'))
@@ -286,6 +296,26 @@ class SteamDataService
         $this->em->persist($user);
         $this->em->flush();
         
-        // TO DO: Run update command
+        $this->runUpdateCommand($user, 'user');
+    }
+
+    /**
+     * Run a specific update command in background
+     *
+     * @param User|int $steamid
+     * @param string $name
+     */
+    public function runUpdateCommand($steamid, $name)
+    {
+        if ($steamid instanceof User) {
+            $steamid = $steamid->getSteamid();
+        }
+
+        exec(sprintf(
+            'php %s steameter:update:%s %s > /dev/null 2>&1 &',
+            $this->consolePath,
+            $name,
+            $steamid
+        ));
     }
 }
