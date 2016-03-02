@@ -12,6 +12,16 @@ use AppBundle\Entity\User;
 abstract class BaseUpdateCommand extends ContainerAwareCommand
 {
     /**
+     * @var InputInterface
+     */
+    protected $input;
+
+    /**
+     * @var OutputInterface
+     */
+    protected $output;
+
+    /**
      * @var Doctrine\ORM\EntityManager
      */
     protected $em;
@@ -49,6 +59,8 @@ abstract class BaseUpdateCommand extends ContainerAwareCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        $this->input     = $input;
+        $this->output    = $output;
         $this->em        = $this->getContainer()->get('doctrine.orm.entity_manager');
         $this->steamApi  = $this->getContainer()->get('steam_api');
         $this->steamData = $this->getContainer()->get('steam_data');

@@ -3,6 +3,7 @@
 namespace AppBundle\Command;
 
 use AppBundle\Entity\UserGame;
+use Symfony\Component\Console\Input\InputArgument;
 
 class UpdateUserGameCommand extends BaseUpdateCommand
 {
@@ -13,21 +14,21 @@ class UpdateUserGameCommand extends BaseUpdateCommand
 
     protected function configure()
     {
+        parent::configure();
+
         $this
             ->setName('steameter:update:game')
             ->setDescription('Run the game update')
+            ->addArgument('gameid', InputArgument::REQUIRED, 'Game\'s ID')
         ;
-
-        parent::configure();
     }
 
     protected function update()
     {
-        $this->userGame = $this->getNextUserGame();
-
-        if (!$this->userGame instanceof UserGame) {
-            return $this->updateUser();
-        }
+        $this->userGame = $this->steamData->getUserGame(
+            $this->user,
+            (int) $this->input->getArgument('gameid')
+        );
 
         $this
             ->updateGameAchievements()
@@ -35,35 +36,6 @@ class UpdateUserGameCommand extends BaseUpdateCommand
             ->updateUserAchievements()
             ->updateUserGame()
         ;
-
-        $this->steamData->runUpdateCommand($this->user, 'game');
-    }
-
-    /**
-     * @return UserGame|null
-     */
-    protected function getNextUserGame()
-    {
-        $result = $this->em
-            ->createQuery('
-                SELECT ug
-                FROM AppBundle:UserGame ug
-                WHERE ug.user = :user
-                    AND (ug.updatedAt IS NULL OR ug.updatedAt < :updated)
-            ')
-            ->setParameters([
-                'user'    => $this->user,
-                'updated' => new \DateTime('-1 day')
-            ])
-            ->setMaxResults(1)
-            ->getResult()
-        ;
-
-        if (!count($result)) {
-            return null;
-        }
-
-        return $result[0];
     }
 
     /**
@@ -177,21 +149,5 @@ class UpdateUserGameCommand extends BaseUpdateCommand
         $this->em->flush();
 
         return $this;
-    }
-
-    protected function updateUser()
-    {
-        if (!$this->user->getIsBeingHandled()) {
-            return;
-        }
-
-        $this->user->setIsBeingHandled(false);
-        $this->user->setUpdatedAt(new \DateTime());
-        $this->user->setRating(
-            $this->steamData->getRating($this->user)
-        );
-
-        $this->em->persist($this->user);
-        $this->em->flush();
     }
 }

@@ -4,13 +4,23 @@
         {{ user.personaname }}
     </h2>
 
-    {% if app.request.get('_route') != 'user' or not user.isBeingHandled %}
-        <p>
-            {{ include('AppBundle:User:rating.html.twig') }}
-        </p>
+    {% if app.request.get('_route') == 'user' %}
+        {% if user.isBeingHandled %}
+            <p id="user-progress" data-url="{{ path('user_progress') }}">
+                {{ render(controller('AppBundle:User:progress')) }}
+            </p>
+        {% else %}
+            <p>
+                {{ include('AppBundle:User:rating.html.twig') }}
+            </p>
+
+            <span class="text-muted">
+                last update: {{ user.updatedAt | date('M j Y g:i a') }}
+                <br />
+                next update: {{ user.updatedAt | date_modify('+1 day') | date('M j Y g:i a') }}
+            </span>
+        {% endif %}
     {% else %}
-        <p id="user-progress" data-url="{{ path('user_progress') }}">
-            {{ render(controller('AppBundle:User:progress')) }}
-        </p>
+        <p>{{ include('AppBundle:User:rating.html.twig') }}</p>
     {% endif %}
 </div>

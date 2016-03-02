@@ -296,26 +296,46 @@ class SteamDataService
         $this->em->persist($user);
         $this->em->flush();
         
-        $this->runUpdateCommand($user, 'user');
+        $this->runUpdateCommand('user', [
+            $user->getSteamid()
+        ]);
     }
 
     /**
-     * Run a specific update command in background
+     * Run a specific update command in background and return its PID
      *
      * @param User|int $steamid
      * @param string $name
+     *
+     * @return int
      */
-    public function runUpdateCommand($steamid, $name)
+    public function runUpdateCommand($name, array $arguments = [])
     {
-        if ($steamid instanceof User) {
-            $steamid = $steamid->getSteamid();
-        }
-
-        exec(sprintf(
-            'php %s steameter:update:%s %s > /dev/null 2>&1 &',
+        $pid = shell_exec(sprintf(
+            'php %s steameter:update:%s %s > /dev/null 2>&1 & echo $!',
             $this->consolePath,
             $name,
-            $steamid
+            implode(' ', $arguments)
         ));
+
+        return (int) trim($pid);
+    }
+
+    /**
+     * Check if a command with specified PID is running
+     *
+     * @param int $pid
+     *
+     * @return bool
+     */
+    public function isCommandRunning($pid)
+    {
+        $output = shell_exec(sprintf('ps %d', $pid));
+
+        if (count(split("\n", $output)) > 2) {
+            return true;
+        }
+
+        return false;
     }
 }

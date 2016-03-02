@@ -3,7 +3,15 @@
 {% block body %}
     <div class="site-wrapper">
         <div class="header">
-            <strong>stea<span class="text-success">meter</span>.</strong>
+            <div class="pull-left">
+                <strong>stea<span class="text-success">meter</span>.</strong>
+            </div>
+
+            <div class="pull-right">
+                {% if is_granted('ROLE_STEAM_USER') %}
+                    [<a href="{{ path('logout') }}">sing out</a>]
+                {% endif %}
+            </div>
         </div>
 
         <div class="site-content">

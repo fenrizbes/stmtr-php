@@ -24,7 +24,9 @@ class UpdateUserCommand extends BaseUpdateCommand
             ->deleteRemoved()
         ;
 
-        $this->steamData->runUpdateCommand($this->user, 'game');
+        $this->steamData->runUpdateCommand('games', [
+            $this->user->getSteamid()
+        ]);
     }
 
     /**
