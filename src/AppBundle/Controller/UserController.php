@@ -12,6 +12,7 @@ use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 use Symfony\Component\Security\Http\Event\InteractiveLoginEvent;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use AppBundle\Entity\User;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
 class UserController extends Controller
 {
@@ -96,6 +97,10 @@ class UserController extends Controller
      */
     public function progressAction(Request $request)
     {
+        if (!$this->get('security.authorization_checker')->isGranted('ROLE_STEAM_USER')) {
+            throw new AccessDeniedHttpException();
+        }
+
         $data = $this->get('steam_data')->getUserProgress(
             $this->getUser()
         );
