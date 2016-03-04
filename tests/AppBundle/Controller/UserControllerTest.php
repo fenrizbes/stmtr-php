@@ -34,6 +34,8 @@ class UserControllerTest extends WebTestCase
             ->setParameter('steamid', 123456789)
             ->execute()
         ;
+
+        $this->user = null;
     }
 
     private function logIn()
@@ -53,12 +55,24 @@ class UserControllerTest extends WebTestCase
         $this->client->getCookieJar()->set($cookie);
     }
 
-    public function testUser()
+    public function testLogin()
     {
-        $crawler = $this->client->request('GET', '/user');
+        $this->logIn();
+
+        $crawler = $this->client->request('GET', '/login');
+
+        $this->assertTrue($this->client->getResponse()->isRedirect('/user'));
+    }
+
+    public function testLogout()
+    {
+        $crawler = $this->client->request('GET', '/logout');
 
         $this->assertTrue($this->client->getResponse()->isRedirect('/'));
+    }
 
+    public function testUser()
+    {
         $this->logIn();
 
         $crawler = $this->client->request('GET', '/user');
@@ -66,6 +80,12 @@ class UserControllerTest extends WebTestCase
         $this->assertEquals(200, $this->client->getResponse()->getStatusCode());
 
         $this->assertContains('Updating the game list', $this->client->getResponse()->getContent());
+
+        $this->client->restart();
+
+        $crawler = $this->client->request('GET', '/user');
+
+        $this->assertTrue($this->client->getResponse()->isRedirect('/'));
     }
 
     public function testProgress()
@@ -83,12 +103,5 @@ class UserControllerTest extends WebTestCase
         $crawler = $this->client->request('GET', '/user/progress');
 
         $this->assertEquals(403, $this->client->getResponse()->getStatusCode());
-    }
-
-    public function testLogout()
-    {
-        $crawler = $this->client->request('GET', '/logout');
-
-        $this->assertTrue($this->client->getResponse()->isRedirect('/'));
     }
 }
