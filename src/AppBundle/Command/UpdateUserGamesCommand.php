@@ -6,8 +6,6 @@ use AppBundle\Entity\UserGame;
 
 class UpdateUserGamesCommand extends BaseUpdateCommand
 {
-    const COMMANDS_LIMIT = 5;
-
     /**
      * @var array
      */
@@ -77,7 +75,9 @@ class UpdateUserGamesCommand extends BaseUpdateCommand
                 'user'    => $this->user,
                 'updated' => new \DateTime('-1 day')
             ])
-            ->setMaxResults(static::COMMANDS_LIMIT)
+            ->setMaxResults(
+                $this->getContainer()->getParameter('update_threads_limit')
+            )
             ->getResult()
         ;
     }

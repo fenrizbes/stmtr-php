@@ -61,7 +61,9 @@ class UserControllerTest extends WebTestCase
 
         $crawler = $this->client->request('GET', '/login');
 
-        $this->assertTrue($this->client->getResponse()->isRedirect('/user'));
+        $this->assertTrue(
+            $this->client->getResponse()->isRedirect('/user/'. $this->user->getHash())
+        );
     }
 
     public function testLogout()
@@ -75,7 +77,7 @@ class UserControllerTest extends WebTestCase
     {
         $this->logIn();
 
-        $crawler = $this->client->request('GET', '/user');
+        $crawler = $this->client->request('GET', '/user/'. $this->user->getHash());
 
         $this->assertEquals(200, $this->client->getResponse()->getStatusCode());
 
@@ -83,7 +85,7 @@ class UserControllerTest extends WebTestCase
 
         $this->client->restart();
 
-        $crawler = $this->client->request('GET', '/user');
+        $crawler = $this->client->request('GET', '/user/'. $this->user->getHash());
 
         $this->assertTrue($this->client->getResponse()->isRedirect('/'));
     }
@@ -92,7 +94,7 @@ class UserControllerTest extends WebTestCase
     {
         $this->logIn();
 
-        $crawler = $this->client->request('GET', '/user/progress');
+        $crawler = $this->client->request('GET', '/user/'. $this->user->getHash() .'/progress');
 
         $this->assertEquals(200, $this->client->getResponse()->getStatusCode());
 
@@ -100,7 +102,7 @@ class UserControllerTest extends WebTestCase
 
         $this->client->restart();
 
-        $crawler = $this->client->request('GET', '/user/progress');
+        $crawler = $this->client->request('GET', '/user/'. $this->user->getHash() .'/progress');
 
         $this->assertEquals(403, $this->client->getResponse()->getStatusCode());
     }

@@ -12,4 +12,5 @@ parameters:
 
     secret:            ThisTokenIsNotSoSecretChangeIt
 
-    steam_api_key:     ~
+    steam_api_key:        ~
+    update_threads_limit: 5

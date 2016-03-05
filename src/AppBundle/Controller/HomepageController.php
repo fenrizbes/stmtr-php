@@ -15,7 +15,9 @@ class HomepageController extends Controller
     public function indexAction()
     {
     	if ($this->get('security.authorization_checker')->isGranted('ROLE_STEAM_USER')) {
-    		return $this->redirectToRoute('user');
+    		return $this->redirectToRoute('user', [
+                'hash' => $this->getUser()->getHash()
+            ]);
     	}
 
         return $this->render('AppBundle:Homepage:index.html.twig');

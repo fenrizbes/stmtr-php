@@ -57,12 +57,18 @@ class User implements UserInterface, \Serializable
      */
     protected $achievements;
 
+    /**
+     * @ORM\Column(length=32)
+     */
+    protected $hash;
+
 	/**
 	 * Initialize default values
 	 */
 	public function __construct()
 	{
 		$this->createdAt    = new \DateTime();
+        $this->hash         = md5(microtime() .'{'. mt_rand() .'}');
         $this->games        = new ArrayCollection();
         $this->achievements = new ArrayCollection();
 	}
@@ -409,5 +415,29 @@ class User implements UserInterface, \Serializable
         }
 
         return preg_replace('/^\d+\./', '', $ratingString);
+    }
+
+    /**
+     * Set hash
+     *
+     * @param string $hash
+     *
+     * @return User
+     */
+    public function setHash($hash)
+    {
+        $this->hash = $hash;
+
+        return $this;
+    }
+
+    /**
+     * Get hash
+     *
+     * @return string
+     */
+    public function getHash()
+    {
+        return $this->hash;
     }
 }

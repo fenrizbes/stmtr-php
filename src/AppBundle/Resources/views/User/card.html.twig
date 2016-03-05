@@ -6,8 +6,10 @@
 
     {% if app.request.get('_route') == 'user' %}
         {% if user.isBeingHandled %}
-            <p id="user-progress" data-url="{{ path('user_progress') }}">
-                {{ render(controller('AppBundle:User:progress')) }}
+            <p id="user-progress" data-url="{{ path('user_progress', { hash: user.hash }) }}">
+                {{ render(controller('AppBundle:User:progress', {
+                    hash: user.hash
+                })) }}
             </p>
         {% else %}
             <p>
