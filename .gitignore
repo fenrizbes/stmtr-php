@@ -16,3 +16,6 @@
 /vendor/
 /web/bundles/
 /web/assetic/
+!/web/userbars
+/web/userbars/*
+!web/userbars/.gitkeep

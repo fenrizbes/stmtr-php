@@ -1,2 +1,11 @@
 <span class="text-success score-main">{{ user.ratingInteger | number_format }}</span>.{{ user.ratingFraction }}
 s<span class="text-success">m</span>.
+
+{% if dates is defined and dates %}
+    <br />
+    <span class="user-dates text-muted">
+        last update: {{ user.updatedAt | date('M j Y g:i a') }}
+        <br />
+        next update: {{ user.updatedAt | date_modify('+1 day') | date('M j Y g:i a') }}
+    </span>
+{% endif %}

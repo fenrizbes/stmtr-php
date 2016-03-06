@@ -79,7 +79,9 @@ class UserController extends Controller
     }
 
     /**
-     * @Route("/user/{hash}", name="user")
+     * @Route("/user/{hash}", name="user", requirements={
+     *      "hash": "\w+"
+     * })
      * @Method("GET")
      */
     public function userAction($hash)
@@ -100,7 +102,9 @@ class UserController extends Controller
     }
 
     /**
-     * @Route("/user/{hash}/progress", name="user_progress")
+     * @Route("/user/{hash}/progress", name="user_progress", requirements={
+     *      "hash": "\w+"
+     * })
      * @Method("GET")
      */
     public function progressAction(Request $request)
@@ -127,5 +131,28 @@ class UserController extends Controller
         }
 
         return new Response($view);
+    }
+
+    /**
+     * @Route("/user/{hash}.png", name="user_bar", requirements={
+     *      "hash": "\w+"
+     * })
+     * @Method("GET")
+     */
+    public function barAction($hash)
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        $user = $em->getRepository('AppBundle:User')->findOneByHash($hash);
+
+        if (!$user instanceof User) {
+            throw $this->createNotFoundException();
+        }
+
+        $image = $this->get('userbar')->getImage($user);
+        
+        return new Response(file_get_contents($image), 200, [
+            'Content-Type' => 'image/png'
+        ]);
     }
 }

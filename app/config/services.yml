@@ -10,3 +10,7 @@ services:
     steam_data:
         class:     AppBundle\Service\SteamDataService
         arguments: [ '@doctrine.orm.entity_manager', '@steam_api', %console_path% ]
+
+    userbar:
+        class:     AppBundle\Service\UserbarService
+        arguments: [ '@steam_data', %web_path% ]

@@ -20,11 +20,6 @@ class User implements UserInterface, \Serializable
 	/**
 	 * @ORM\Column(nullable=true)
 	 */
-	protected $personaname;
-
-	/**
-	 * @ORM\Column(nullable=true)
-	 */
 	protected $avatar;
 
 	/**
@@ -95,30 +90,6 @@ class User implements UserInterface, \Serializable
     public function getSteamid()
     {
         return $this->steamid;
-    }
-
-    /**
-     * Set personaname
-     *
-     * @param string $personaname
-     *
-     * @return User
-     */
-    public function setPersonaname($personaname)
-    {
-        $this->personaname = $personaname;
-
-        return $this;
-    }
-
-    /**
-     * Get personaname
-     *
-     * @return string
-     */
-    public function getPersonaname()
-    {
-        return $this->personaname;
     }
 
     /**
@@ -368,6 +339,7 @@ class User implements UserInterface, \Serializable
      */
     public function isOutdated()
     {
+        return false;
         if ($this->isBeingHandled) {
             return false;
         }

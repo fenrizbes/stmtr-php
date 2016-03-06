@@ -1,28 +1,17 @@
 <div class="user-card">
-    <h2 class="text-nowrap">
-        <img src="{{ user.avatar }}" />
-        {{ user.personaname }}
-    </h2>
+    <img src="{{ user.avatar }}" />
 
     {% if app.request.get('_route') == 'user' %}
         {% if user.isBeingHandled %}
-            <p id="user-progress" data-url="{{ path('user_progress', { hash: user.hash }) }}">
+            <span id="user-progress" data-url="{{ path('user_progress', { hash: user.hash }) }}">
                 {{ render(controller('AppBundle:User:progress', {
                     hash: user.hash
                 })) }}
-            </p>
-        {% else %}
-            <p>
-                {{ include('AppBundle:User:rating.html.twig') }}
-            </p>
-
-            <span class="text-muted">
-                last update: {{ user.updatedAt | date('M j Y g:i a') }}
-                <br />
-                next update: {{ user.updatedAt | date_modify('+1 day') | date('M j Y g:i a') }}
             </span>
+        {% else %}
+            {{ include('AppBundle:User:rating.html.twig', { dates: true }) }}
         {% endif %}
     {% else %}
-        <p>{{ include('AppBundle:User:rating.html.twig') }}</p>
+        {{ include('AppBundle:User:rating.html.twig') }}
     {% endif %}
 </div>

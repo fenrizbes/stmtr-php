@@ -25,7 +25,7 @@ class SteamAPIServiceTest extends KernelTestCase
 
         $this->assertInternalType('array', $data);
 
-        $this->assertArrayHasKey('personaname', $data);
+        $this->assertArrayHasKey('avatar', $data);
     }
 
     public function testGetUserGames()

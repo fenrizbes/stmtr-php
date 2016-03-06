@@ -26,7 +26,7 @@ class HomepageController extends Controller
     /**
      * Render new users' cards
      */
-    public function newUsersAction($limit = 4)
+    public function newUsersAction($limit = 6)
     {
         $em = $this->getDoctrine()->getManager();
 

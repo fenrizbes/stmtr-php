@@ -106,4 +106,17 @@ class UserControllerTest extends WebTestCase
 
         $this->assertEquals(403, $this->client->getResponse()->getStatusCode());
     }
+
+    public function testBar()
+    {
+        $user = $this->em->getRepository('AppBundle:User')->findOneBy([]);
+
+        $crawler = $this->client->request('GET', '/user/'. $user->getHash() .'.png');
+
+        $this->assertEquals(200, $this->client->getResponse()->getStatusCode());
+
+        $crawler = $this->client->request('GET', '/user/test.png');
+
+        $this->assertEquals(404, $this->client->getResponse()->getStatusCode());
+    }
 }

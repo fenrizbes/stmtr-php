@@ -4,6 +4,7 @@
     Updating achievements: {{ percentage | round(1) }}%<img src="{{ asset('bundles/app/images/ball.gif') }}">
 {% else %}
     {{ include('AppBundle:User:rating.html.twig', {
-        user: app.user
+        user:  app.user,
+        dates: true
     }) }}
 {% endif %}

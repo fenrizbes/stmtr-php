@@ -54,12 +54,16 @@ a:visited,
     vertical-align: bottom;
 }
 
-.user-card h2 {
-    overflow: hidden;
+.user-card {
+    font-size: 18px;
+}
+
+.user-card img {
+    vertical-align: text-bottom;
 }
 
 .score-main {
-    font-size: 46px;
+    font-size: 32px;
     font-weight: bold;
 }
 
@@ -70,10 +74,6 @@ a:visited,
     margin-top: 10px;
 }
 
-.new-users .user-card h2 {
-    font-size: 25px;
-}
-
-.new-users .score-main {
-    font-size: 27px;
+.user-dates {
+    font-size: 14px;
 }

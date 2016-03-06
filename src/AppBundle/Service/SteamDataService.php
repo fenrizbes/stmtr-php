@@ -288,7 +288,6 @@ class SteamDataService
         $data = $this->steamApi->getUserData($user->getSteamid());
 
         $user
-            ->setPersonaname($data['personaname'])
             ->setAvatar($data['avatar'])
             ->setIsBeingHandled(true)
         ;
