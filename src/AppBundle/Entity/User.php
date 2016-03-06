@@ -339,7 +339,6 @@ class User implements UserInterface, \Serializable
      */
     public function isOutdated()
     {
-        return false;
         if ($this->isBeingHandled) {
             return false;
         }

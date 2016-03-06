@@ -37,6 +37,10 @@ class UpdateUserCommand extends BaseUpdateCommand
         $gameList = $this->steamApi->getUserGames($this->user->getSteamid());
 
         foreach ($gameList as $gameData) {
+            if (!$gameData['playtime_forever']) {
+                continue;
+            }
+
             $userGame = $this->steamData->getUserGame($this->user, $gameData['appid'], false);
             $userGame->setCheckedAt($this->checkedAt);
 
