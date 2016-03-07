@@ -43,6 +43,11 @@ class User implements UserInterface, \Serializable
     protected $isBeingHandled = false;
 
     /**
+     * @ORM\Column(type="integer", name="games_owned")
+     */
+    protected $gamesOwned = 0;
+
+    /**
      * @ORM\OneToMany(targetEntity="UserGame", mappedBy="user")
      */
     protected $games;
@@ -410,5 +415,29 @@ class User implements UserInterface, \Serializable
     public function getHash()
     {
         return $this->hash;
+    }
+
+    /**
+     * Set gamesOwned
+     *
+     * @param integer $gamesOwned
+     *
+     * @return User
+     */
+    public function setGamesOwned($gamesOwned)
+    {
+        $this->gamesOwned = $gamesOwned;
+
+        return $this;
+    }
+
+    /**
+     * Get gamesOwned
+     *
+     * @return integer
+     */
+    public function getGamesOwned()
+    {
+        return $this->gamesOwned;
     }
 }

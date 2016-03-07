@@ -36,12 +36,27 @@ class UpdateUserCommand extends BaseUpdateCommand
     {
         $gameList = $this->steamApi->getUserGames($this->user->getSteamid());
 
+        $this->user->setGamesOwned(count($gameList));
+        $this->em->persist($this->user);
+
         foreach ($gameList as $gameData) {
-            if (!$gameData['playtime_forever']) {
+            if (
+                !$gameData['playtime_forever']
+                ||
+                !array_key_exists('has_community_visible_stats', $gameData)
+                ||
+                !$gameData['has_community_visible_stats']
+            ) {
                 continue;
             }
 
             $userGame = $this->steamData->getUserGame($this->user, $gameData['appid'], false);
+
+            if ($gameData['playtime_forever'] == $userGame->getPlaytime()) {
+                $userGame->setUpdatedAt(new \DateTime());
+            }
+
+            $userGame->setPlaytime($gameData['playtime_forever']);
             $userGame->setCheckedAt($this->checkedAt);
 
             $this->em->persist($userGame);

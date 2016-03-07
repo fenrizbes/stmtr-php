@@ -83,7 +83,9 @@ class SteamAPIService
     public function getUserGames($steamid)
     {
         return $this->sendRequest(static::SCOPE_PLAYER, 'GetOwnedGames', 1, [
-            'steamid' => $steamid
+            'steamid'                   => $steamid,
+            'include_played_free_games' => 1,
+            'include_appinfo'           => 1 
         ], [
             'response',
             'games'

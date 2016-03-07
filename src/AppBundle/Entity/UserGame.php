@@ -20,6 +20,11 @@ class UserGame
     protected $id;
 
     /**
+     * @ORM\Column(type="integer")
+     */
+    protected $playtime = 0;
+
+    /**
      * @ORM\Column(type="datetime", name="updated_at", nullable=true)
      */
     protected $updatedAt;
@@ -145,5 +150,29 @@ class UserGame
     public function getGame()
     {
         return $this->game;
+    }
+
+    /**
+     * Set playtime
+     *
+     * @param integer $playtime
+     *
+     * @return UserGame
+     */
+    public function setPlaytime($playtime)
+    {
+        $this->playtime = $playtime;
+
+        return $this;
+    }
+
+    /**
+     * Get playtime
+     *
+     * @return integer
+     */
+    public function getPlaytime()
+    {
+        return $this->playtime;
     }
 }
