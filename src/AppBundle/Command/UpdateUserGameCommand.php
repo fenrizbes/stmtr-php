@@ -82,6 +82,10 @@ class UpdateUserGameCommand extends BaseUpdateCommand
      */
     protected function updateUserAchievements()
     {
+        if (!$this->userGame->isOutdated()) {
+            return $this;
+        }
+
         $game = $this->userGame->getGame();
 
         if (!count($game->getAchievements())) {
@@ -144,6 +148,9 @@ class UpdateUserGameCommand extends BaseUpdateCommand
     protected function updateUserGame()
     {
         $this->userGame->setUpdatedAt(new \DateTime());
+        $this->userGame->setPreviousPlaytime(
+            $this->userGame->getCurrentPlaytime()
+        );
 
         $this->em->persist($this->userGame);
         $this->em->flush();

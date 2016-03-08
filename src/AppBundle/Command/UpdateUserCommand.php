@@ -51,12 +51,7 @@ class UpdateUserCommand extends BaseUpdateCommand
             }
 
             $userGame = $this->steamData->getUserGame($this->user, $gameData['appid'], false);
-
-            if ($gameData['playtime_forever'] == $userGame->getPlaytime()) {
-                $userGame->setUpdatedAt(new \DateTime());
-            }
-
-            $userGame->setPlaytime($gameData['playtime_forever']);
+            $userGame->setCurrentPlaytime($gameData['playtime_forever']);
             $userGame->setCheckedAt($this->checkedAt);
 
             $this->em->persist($userGame);

@@ -6,4 +6,25 @@
             user: app.user
         }) }}
     </div>
+
+    <div class="jumbotron">
+        <h2>share with your friends:</h2>
+
+    </div>
+
+    <div class="jumbotron">
+        <h2>or grab this awesome userbar:</h2>
+
+        <div class="user-bar">
+            <img src="{{ path('user_bar', { hash: app.user.hash }) }}" />
+        </div>
+
+        <div class="clearfix"></div>
+
+        <p>
+            <br />
+            the userbar is updated automatically each time you achieve a new rating.
+            just put it in your forum signature:
+        </p>
+    </div>
 {% endblock %}

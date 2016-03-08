@@ -7,11 +7,11 @@ use AppBundle\Entity\User;
 class UserbarService
 {
     const IMAGE_WIDTH   = 538;
-    const IMAGE_HEIGHT  = 52;
-    const IMAGE_PADDING = 10;
+    const IMAGE_HEIGHT  = 42;
+    const IMAGE_PADDING = 5;
 
-    const FSIZE_COMMON = 16;
-    const FSIZE_BIG    = 32;
+    const FSIZE_COMMON = 14;
+    const FSIZE_BIG    = 26;
     const FSIZE_SMALL  = 10;
 
     const AVATAR_SIZE = 32;
@@ -175,7 +175,7 @@ class UserbarService
                 $image,
                 $user,
                 static::IMAGE_PADDING * 2 + static::AVATAR_SIZE,
-                static::IMAGE_PADDING + static::FSIZE_BIG,
+                static::IMAGE_PADDING + (static::AVATAR_SIZE + static::FSIZE_BIG) / 2,
                 $colors
             )
             ->placeWatermark(
@@ -184,7 +184,7 @@ class UserbarService
                 static::IMAGE_PADDING + static::FSIZE_SMALL,
                 $colors
             )
-        ;        $path = $this->imagesPath .'/'. $user->getHash() .'.png';
+        ;
 
         if (!@imagepng($image, $path)) {
             throw new \Exception('Cannot save file');

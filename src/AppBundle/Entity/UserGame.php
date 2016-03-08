@@ -20,9 +20,14 @@ class UserGame
     protected $id;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="integer", name="previous_playtime")
      */
-    protected $playtime = 0;
+    protected $previousPlaytime = 0;
+
+    /**
+     * @ORM\Column(type="integer", name="current_playtime")
+     */
+    protected $currentPlaytime = 0;
 
     /**
      * @ORM\Column(type="datetime", name="updated_at", nullable=true)
@@ -153,26 +158,64 @@ class UserGame
     }
 
     /**
-     * Set playtime
+     * Set previousPlaytime
      *
-     * @param integer $playtime
+     * @param integer $previousPlaytime
      *
      * @return UserGame
      */
-    public function setPlaytime($playtime)
+    public function setPreviousPlaytime($previousPlaytime)
     {
-        $this->playtime = $playtime;
+        $this->previousPlaytime = $previousPlaytime;
 
         return $this;
     }
 
     /**
-     * Get playtime
+     * Get previousPlaytime
      *
      * @return integer
      */
-    public function getPlaytime()
+    public function getPreviousPlaytime()
     {
-        return $this->playtime;
+        return $this->previousPlaytime;
+    }
+
+    /**
+     * Set currentPlaytime
+     *
+     * @param integer $currentPlaytime
+     *
+     * @return UserGame
+     */
+    public function setCurrentPlaytime($currentPlaytime)
+    {
+        $this->currentPlaytime = $currentPlaytime;
+
+        return $this;
+    }
+
+    /**
+     * Get currentPlaytime
+     *
+     * @return integer
+     */
+    public function getCurrentPlaytime()
+    {
+        return $this->currentPlaytime;
+    }
+
+    /**
+     * Check if the game was played and has to be updated
+     *
+     * @return bool
+     */
+    public function isOutdated()
+    {
+        if ($this->getPreviousPlaytime() == $this->getCurrentPlaytime()) {
+            return false;
+        }
+
+        return true;
     }
 }

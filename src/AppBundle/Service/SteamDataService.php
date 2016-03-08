@@ -237,7 +237,7 @@ class SteamDataService
     {
         $hours = $this->em
             ->createQuery('
-                SELECT SUM(ug.playtime / 60)
+                SELECT SUM(ug.currentPlaytime / 60)
                 FROM AppBundle:UserGame ug
                 WHERE ug.user = :user
             ')

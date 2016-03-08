@@ -1,13 +1,16 @@
 {% if status in ['games', 'achievements'] %}
     <h2>your rating is being calculated.</h2>
 
-    just give as a few seconds.
+    just give as a few seconds. or a bit more...
     <br /><br />
 
     {% if status == 'games' %}
         updating the game list
     {% else %}
-        updating achievements: {{ percentage | number_format(1) }}%
+        updating achievements:
+        <span class="text-success">
+            {{ percentage | number_format(1) }}%
+        </span>
     {% endif %}
 
     <img src="{{ asset('bundles/app/images/ball.gif') }}" />
