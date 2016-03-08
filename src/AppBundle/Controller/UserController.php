@@ -98,7 +98,9 @@ class UserController extends Controller
             $this->get('steam_data')->updateUser($this->getUser());
         }
 
-        return $this->render('AppBundle:User:index.html.twig');
+        return $this->render('AppBundle:User:index.html.twig', [
+            'statistics' => $this->get('steam_data')->getStatistics($this->getUser())
+        ]);
     }
 
     /**
@@ -121,7 +123,9 @@ class UserController extends Controller
             $this->getUser()
         );
 
-        $view = $this->renderView('AppBundle:User:progress.html.twig', $data);
+        $view = $this->renderView('AppBundle:User:progress.html.twig', array_merge([
+            'statistics' => $this->get('steam_data')->getStatistics($this->getUser())
+        ], $data));
 
         if ($request->isXmlHttpRequest()) {
             return new JsonResponse([

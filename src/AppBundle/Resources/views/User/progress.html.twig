@@ -1,12 +1,19 @@
-{% if status == 'games' %}
-    Updating the game list
-    <img src="{{ asset('bundles/app/images/ball.gif') }}">
-{% elseif status == 'achievements' %}
-    Updating achievements: {{ percentage | number_format(1) }}%
-    <img src="{{ asset('bundles/app/images/ball.gif') }}">
+{% if status in ['games', 'achievements'] %}
+    <h2>your rating is being calculated.</h2>
+
+    just give as a few seconds.
+    <br /><br />
+
+    {% if status == 'games' %}
+        updating the game list
+    {% else %}
+        updating achievements: {{ percentage | number_format(1) }}%
+    {% endif %}
+
+    <img src="{{ asset('bundles/app/images/ball.gif') }}" />
+
 {% else %}
-    {{ include('AppBundle:User:rating.html.twig', {
-        user:  app.user,
-        dates: true
+    {{ include('AppBundle:User:result.html.twig', {
+        user: app.user
     }) }}
 {% endif %}

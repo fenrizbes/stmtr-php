@@ -5,7 +5,11 @@
         </h2>
 
         {% for user in users %}
-            {{ include('AppBundle:User:card.html.twig') }}
+            <div class="user-card">
+                <img src="{{ user.avatar }}" />
+
+                {{ include('AppBundle:User:rating.html.twig') }}
+            </div>
         {% endfor %}
 
         <div class="clearfix"></div>

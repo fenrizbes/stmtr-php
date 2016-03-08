@@ -1,17 +1,11 @@
 <div class="user-card">
-    <img src="{{ user.avatar }}" />
-
-    {% if app.request.get('_route') == 'user' %}
-        {% if user.isBeingHandled %}
-            <span id="user-progress" data-url="{{ path('user_progress', { hash: user.hash }) }}">
-                {{ render(controller('AppBundle:User:progress', {
-                    hash: user.hash
-                })) }}
-            </span>
-        {% else %}
-            {{ include('AppBundle:User:rating.html.twig', { dates: true }) }}
-        {% endif %}
+    {% if user.isBeingHandled %}
+        <div id="user-progress" data-url="{{ path('user_progress', { hash: user.hash }) }}">
+            {{ render(controller('AppBundle:User:progress', {
+                hash: user.hash
+            })) }}
+        </div>
     {% else %}
-        {{ include('AppBundle:User:rating.html.twig') }}
+        {{ include('AppBundle:User:result.html.twig') }}
     {% endif %}
 </div>

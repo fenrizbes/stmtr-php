@@ -81,7 +81,7 @@ class UserControllerTest extends WebTestCase
 
         $this->assertEquals(200, $this->client->getResponse()->getStatusCode());
 
-        $this->assertContains('Updating the game list', $this->client->getResponse()->getContent());
+        $this->assertContains('updating the game list', $this->client->getResponse()->getContent());
 
         $this->client->restart();
 
@@ -98,7 +98,7 @@ class UserControllerTest extends WebTestCase
 
         $this->assertEquals(200, $this->client->getResponse()->getStatusCode());
 
-        $this->assertContains('Updating the game list', $this->client->getResponse()->getContent());
+        $this->assertContains('updating the game list', $this->client->getResponse()->getContent());
 
         $this->client->restart();
 

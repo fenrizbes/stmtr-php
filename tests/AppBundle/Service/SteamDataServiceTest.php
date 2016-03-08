@@ -71,6 +71,19 @@ class SteamDataServiceTest extends KernelTestCase
         $this->assertNull(static::$steamData->getRating($user));
     }
 
+    public function testGetStatistics()
+    {
+        $user = static::$steamData->getUser(static::STEAMID, false);
+
+        $data = static::$steamData->getStatistics($user);
+
+        $this->assertInternalType('array', $data);
+
+        $this->assertArrayHasKey('games', $data);
+        $this->assertArrayHasKey('hours', $data);
+        $this->assertArrayHasKey('achievements', $data);
+    }
+
     public function testGetUserProgress()
     {
         $user = static::$steamData->getUser(static::STEAMID, false);

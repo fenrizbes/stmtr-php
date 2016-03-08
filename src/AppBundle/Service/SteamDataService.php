@@ -227,6 +227,42 @@ class SteamDataService
     }
 
     /**
+     * Return user's statistic information
+     *
+     * @param User $user
+     *
+     * @return array
+     */
+    public function getStatistics(User $user)
+    {
+        $hours = $this->em
+            ->createQuery('
+                SELECT SUM(ug.playtime / 60)
+                FROM AppBundle:UserGame ug
+                WHERE ug.user = :user
+            ')
+            ->setParameter('user', $user)
+            ->getSingleResult()
+        ;
+
+        $achievements = $this->em
+            ->createQuery('
+                SELECT COUNT(ua)
+                FROM AppBundle:UserAchievement ua
+                WHERE ua.user = :user
+            ')
+            ->setParameter('user', $user)
+            ->getSingleResult()
+        ;
+
+        return [
+            'games'        => $user->getGamesOwned(),
+            'hours'        => current($hours),
+            'achievements' => current($achievements)
+        ];
+    }
+
+    /**
      * Return information about a current updating proggress
      *
      * @param User|int $user

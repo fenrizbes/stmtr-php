@@ -77,3 +77,21 @@ a:visited,
 .user-dates {
     font-size: 14px;
 }
+
+.result-left {
+    width: 580px;
+}
+
+.result-right {
+    width: 270px;
+    padding-top: 15px;
+}
+
+.result-right-title {
+    text-align: right;
+    width: 160px;
+}
+
+.result-right-value {
+    width: 100px;
+}
