@@ -26,7 +26,12 @@ userProgress = {
             .success(function(response) {
                 _this.el.html(response.view);
 
-                response.stop || _this._setTimeout();
+                if (response.stop) {
+                    $('#userbar').attr('src', $('#userbar').attr('src') +'?update=1');
+                    $('#user-share-block, #user-bar-block').removeClass('hidden');
+                } else {
+                    _this._setTimeout();
+                }
             })
             .fail(function() {
                 _this.el.text('Opps! Something went wrong!');
@@ -42,3 +47,7 @@ var $progressContainer = $('#user-progress');
 if ($progressContainer.length) {
     userProgress.init($progressContainer);
 }
+
+$('#user-bar-block input').on('focus click', function() {
+    this.setSelectionRange(0, this.value.length);
+});
