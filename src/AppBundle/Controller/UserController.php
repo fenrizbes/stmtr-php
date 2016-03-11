@@ -23,9 +23,7 @@ class UserController extends Controller
     public function loginAction(Request $request)
     {
     	if ($this->get('security.authorization_checker')->isGranted('ROLE_STEAM_USER')) {
-    		return $this->redirectToRoute('user', [
-                'hash' => $this->getUser()->getHash()
-            ]);
+    		return $this->redirectToRoute('user');
     	}
 
         $openid = new \LightOpenID($request->getHost());
@@ -61,9 +59,7 @@ class UserController extends Controller
         $event = new InteractiveLoginEvent($request, $token);
         $this->get('event_dispatcher')->dispatch('security.interactive_login', $event);
         
-        return $this->redirectToRoute('user', [
-            'hash' => $user->getHash()
-        ]);
+        return $this->redirectToRoute('user');
     }
 
     /**
@@ -79,19 +75,13 @@ class UserController extends Controller
     }
 
     /**
-     * @Route("/user/{hash}", name="user", requirements={
-     *      "hash": "\w+"
-     * })
+     * @Route("/user", name="user")
      * @Method("GET")
      */
-    public function userAction($hash)
+    public function userAction()
     {
         if (!$this->get('security.authorization_checker')->isGranted('ROLE_STEAM_USER')) {
             return $this->redirectToRoute('homepage');
-        }
-
-        if ($this->getUser()->getHash() != $hash) {
-            throw new AccessDeniedHttpException();
         }
 
         if ($this->getUser()->isOutdated()) {
@@ -104,18 +94,12 @@ class UserController extends Controller
     }
 
     /**
-     * @Route("/user/{hash}/progress", name="user_progress", requirements={
-     *      "hash": "\w+"
-     * })
+     * @Route("/user/progress", name="user_progress")
      * @Method("GET")
      */
     public function progressAction(Request $request)
     {
         if (!$this->get('security.authorization_checker')->isGranted('ROLE_STEAM_USER')) {
-            throw new AccessDeniedHttpException();
-        }
-
-        if ($this->getUser()->getHash() != $request->get('hash')) {
             throw new AccessDeniedHttpException();
         }
 

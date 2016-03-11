@@ -8,43 +8,10 @@
     </div>
 
     <div id="user-share-block" class="jumbotron{{ app.user.isBeingHandled ? ' hidden' }}">
-        <h2>share with your friends:</h2>
-
+        {{ include('AppBundle:User:sharing.html.twig') }}
     </div>
 
     <div id="user-bar-block" class="jumbotron{{ app.user.isBeingHandled ? ' hidden' }}">
-        {% set siteUrl = 'http://' ~ app.request.host %}
-        {% set userbarPath = siteUrl ~ path('user_bar', { hash: app.user.hash }) %}
-
-        <h2>or grab this awesome userbar:</h2>
-
-        <div class="user-bar">
-            <img src="{{ userbarPath }}" id="userbar" />
-        </div>
-
-        <div class="clearfix"></div>
-
-        <p>
-            <br />
-            the userbar is updated automatically each time you achieve a new rating.
-            just put it in your forum signature:
-            <br /><br />
-        </p>
-
-        <p>
-            image url:
-            <input type="text" value="{{ userbarPath }}" />
-        </p>
-
-        <p>
-            html code:
-            <input type="text" value="{{ '<a href="' ~ siteUrl ~ '" target="_blank"><img src="' ~ userbarPath ~ '" alt="' ~ siteUrl ~ '" border="0"></a>' }}" />
-        </p>
-
-        <p>
-            &nbsp;&nbsp;bb code:
-            <input type="text" value="{{ '[url=' ~ siteUrl ~ '][img]' ~ userbarPath ~ '[/img][/url]' }}" />
-            <br />
-        </p>
+        {{ include('AppBundle:User:userbar.html.twig') }}
     </div>
 {% endblock %}
