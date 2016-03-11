@@ -123,7 +123,7 @@ class UserController extends Controller
 
     /**
      * @Route("/user/{hash}.png", name="user_bar", requirements={
-     *      "hash": "\w+"
+     *      "hash": "\w{32}"
      * })
      * @Method("GET")
      */
@@ -137,10 +137,32 @@ class UserController extends Controller
             throw $this->createNotFoundException();
         }
 
-        $image = $this->get('userbar')->getImage($user);
+        $image = $this->get('user_image')->getUserbar($user);
         
         return new Response(file_get_contents($image), 200, [
             'Content-Type' => 'image/png'
+        ]);
+    }
+
+    /**
+     * @Route("/user/{hash}", name="user_share", requirements={
+     *      "hash": "\w{32}"
+     * })
+     * @Method("GET")
+     */
+    public function shareAction($hash)
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        $user = $em->getRepository('AppBundle:User')->findOneByHash($hash);
+
+        if (!$user instanceof User) {
+            throw $this->createNotFoundException();
+        }
+
+        return $this->render('AppBundle:User:shared.html.twig', [
+            'user'  => $user,
+            'image' => $this->get('user_image')->getShareImage($user)
         ]);
     }
 }

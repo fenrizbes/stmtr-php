@@ -4,7 +4,7 @@ namespace AppBundle\Service;
 
 use AppBundle\Entity\User;
 
-class UserbarService
+class UserImageService
 {
     const IMAGE_WIDTH   = 538;
     const IMAGE_HEIGHT  = 42;
@@ -162,7 +162,7 @@ class UserbarService
      *
      * @throws \Exception
      */
-    protected function createImage(User $user, $path)
+    protected function createUserbar(User $user, $path)
     {
         $image   = imagecreatetruecolor(static::IMAGE_WIDTH, static::IMAGE_HEIGHT);
         $markBox = imagettfbbox(static::FSIZE_SMALL, 0, $this->fontR, 'steameter.com');
@@ -222,7 +222,7 @@ class UserbarService
      *
      * @return string
      */
-    public function getImage(User $user)
+    public function getUserbar(User $user)
     {
         $path = $this->imagesPath .'/'. $user->getHash() .'.png';
 
@@ -231,9 +231,17 @@ class UserbarService
         }
 
         if ($this->isImageOutdated($user, $path)) {
-            $this->createImage($user, $path);
+            $this->createUserbar($user, $path);
         }
 
         return $path;
     }
+
+    /**
+     * @param User $user
+     *
+     * @return string
+     */
+    public function getShareImage(User $user)
+    {}
 }

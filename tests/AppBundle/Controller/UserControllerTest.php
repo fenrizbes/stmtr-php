@@ -119,4 +119,21 @@ class UserControllerTest extends WebTestCase
 
         $this->assertEquals(404, $this->client->getResponse()->getStatusCode());
     }
+
+    public function testShare()
+    {
+        $user = $this->em->getRepository('AppBundle:User')->findOneBy([]);
+
+        $crawler = $this->client->request('GET', '/user/'. $user->getHash());
+
+        $this->assertEquals(200, $this->client->getResponse()->getStatusCode());
+
+        $crawler = $this->client->request('GET', '/user/test');
+
+        $this->assertEquals(404, $this->client->getResponse()->getStatusCode());
+
+        $crawler = $this->client->request('GET', '/user/32symbollengthstringneedabitmore');
+
+        $this->assertEquals(404, $this->client->getResponse()->getStatusCode());
+    }
 }

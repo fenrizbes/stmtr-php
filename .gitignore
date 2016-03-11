@@ -19,3 +19,6 @@
 !/web/userbars
 /web/userbars/*
 !web/userbars/.gitkeep
+!/web/sharing
+/web/sharing/*
+!web/sharing/.gitkeep

@@ -11,6 +11,6 @@ services:
         class:     AppBundle\Service\SteamDataService
         arguments: [ '@doctrine.orm.entity_manager', '@steam_api', %console_path% ]
 
-    userbar:
-        class:     AppBundle\Service\UserbarService
+    user_image:
+        class:     AppBundle\Service\UserImageService
         arguments: [ '@steam_data', %web_path% ]
