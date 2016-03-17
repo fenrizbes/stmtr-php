@@ -8,9 +8,11 @@
             </div>
 
             <div class="pull-right">
-                {% if is_granted('ROLE_STEAM_USER') %}
-                    [<a href="{{ path('logout') }}">sing out</a>]
-                {% endif %}
+                {% block logout %}
+                    {% if is_granted('ROLE_STEAM_USER') %}
+                        [<a href="{{ path('logout') }}">sing out</a>]
+                    {% endif %}
+                {% endblock %}
             </div>
         </div>
 

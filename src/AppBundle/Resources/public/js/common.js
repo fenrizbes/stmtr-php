@@ -29,6 +29,7 @@ userProgress = {
                 if (response.stop) {
                     $('#userbar').attr('src', $('#userbar').attr('src') +'?update=1');
                     $('#user-share-block, #user-bar-block').removeClass('hidden');
+                    $(window).resize();
                 } else {
                     _this._setTimeout();
                 }

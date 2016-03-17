@@ -1,5 +1,3 @@
-<h2>your current rating:</h2>
-
 <div class="result-left pull-left">
     <img src="{{ user.avatar }}" />
 
@@ -16,24 +14,24 @@
 
 <div class="result-right pull-right">
     <div class="result-right-title pull-left">
-        games owned:
+        games&nbsp;&nbsp;owned:
     </div>
     <div class="result-right-value pull-right text-success">
-        {{ statistics.games | number_format }}
+        {{ user.gamesOwned | number_format }}
     </div>
 
     <div class="result-right-title pull-left">
         hours played:
     </div>
     <div class="result-right-value pull-right text-success">
-        {{ statistics.hours | number_format }}
+        {{ user.hoursPlayed | number_format }}
     </div>
 
     <div class="result-right-title pull-left">
         achievements:
     </div>
     <div class="result-right-value pull-right text-success">
-        {{ statistics.achievements | number_format }}
+        {{ user.achievements | length | number_format }}
     </div>
 </div>
 

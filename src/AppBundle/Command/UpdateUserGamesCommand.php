@@ -93,6 +93,9 @@ class UpdateUserGamesCommand extends BaseUpdateCommand
         $this->user->setRating(
             $this->steamData->getRating($this->user)
         );
+        $this->user->setHoursPlayed(
+            $this->steamData->getHours($this->user)
+        );
 
         $this->em->persist($this->user);
         $this->em->flush();

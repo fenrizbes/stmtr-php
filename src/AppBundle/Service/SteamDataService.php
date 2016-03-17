@@ -227,15 +227,13 @@ class SteamDataService
     }
 
     /**
-     * Return user's statistic information
-     *
      * @param User $user
      *
-     * @return array
+     * @return int
      */
-    public function getStatistics(User $user)
+    public function getHours(User $user)
     {
-        $hours = $this->em
+        $result = $this->em
             ->createQuery('
                 SELECT SUM(ug.currentPlaytime / 60)
                 FROM AppBundle:UserGame ug
@@ -245,21 +243,7 @@ class SteamDataService
             ->getSingleResult()
         ;
 
-        $achievements = $this->em
-            ->createQuery('
-                SELECT COUNT(ua)
-                FROM AppBundle:UserAchievement ua
-                WHERE ua.user = :user
-            ')
-            ->setParameter('user', $user)
-            ->getSingleResult()
-        ;
-
-        return [
-            'games'        => $user->getGamesOwned(),
-            'hours'        => current($hours),
-            'achievements' => current($achievements)
-        ];
+        return current($result);
     }
 
     /**
@@ -325,6 +309,7 @@ class SteamDataService
 
         $user
             ->setAvatar($data['avatar'])
+            ->setAvatarmedium($data['avatarmedium'])
             ->setIsBeingHandled(true)
         ;
 

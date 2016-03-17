@@ -22,6 +22,11 @@ class User implements UserInterface, \Serializable
 	 */
 	protected $avatar;
 
+    /**
+     * @ORM\Column(nullable=true)
+     */
+    protected $avatarmedium;
+
 	/**
 	 * @ORM\Column(type="datetime", name="created_at")
 	 */
@@ -46,6 +51,11 @@ class User implements UserInterface, \Serializable
      * @ORM\Column(type="integer", name="games_owned")
      */
     protected $gamesOwned = 0;
+
+    /**
+     * @ORM\Column(type="integer", name="hours_played")
+     */
+    protected $hoursPlayed = 0;
 
     /**
      * @ORM\OneToMany(targetEntity="UserGame", mappedBy="user")
@@ -439,5 +449,53 @@ class User implements UserInterface, \Serializable
     public function getGamesOwned()
     {
         return $this->gamesOwned;
+    }
+
+    /**
+     * Set avatarmedium
+     *
+     * @param string $avatarmedium
+     *
+     * @return User
+     */
+    public function setAvatarmedium($avatarmedium)
+    {
+        $this->avatarmedium = $avatarmedium;
+
+        return $this;
+    }
+
+    /**
+     * Get avatarmedium
+     *
+     * @return string
+     */
+    public function getAvatarmedium()
+    {
+        return $this->avatarmedium;
+    }
+
+    /**
+     * Set hoursPlayed
+     *
+     * @param integer $hoursPlayed
+     *
+     * @return User
+     */
+    public function setHoursPlayed($hoursPlayed)
+    {
+        $this->hoursPlayed = $hoursPlayed;
+
+        return $this;
+    }
+
+    /**
+     * Get hoursPlayed
+     *
+     * @return integer
+     */
+    public function getHoursPlayed()
+    {
+        return $this->hoursPlayed;
     }
 }

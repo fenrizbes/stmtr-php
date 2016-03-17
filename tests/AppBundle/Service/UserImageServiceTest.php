@@ -33,4 +33,11 @@ class UserImageServiceTest extends KernelTestCase
 
         $this->assertEquals(static::$webPath .'/userbars/'. static::$user->getHash() .'.png', $image);
     }
+
+    public function testGetShareImage()
+    {
+        $image = static::$userImage->getShareImage(static::$user);
+
+        $this->assertEquals(static::$webPath .'/sharing/'. static::$user->getHash() .'.png', $image);
+    }
 }

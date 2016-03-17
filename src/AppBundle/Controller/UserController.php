@@ -88,9 +88,7 @@ class UserController extends Controller
             $this->get('steam_data')->updateUser($this->getUser());
         }
 
-        return $this->render('AppBundle:User:index.html.twig', [
-            'statistics' => $this->get('steam_data')->getStatistics($this->getUser())
-        ]);
+        return $this->render('AppBundle:User:index.html.twig');
     }
 
     /**
@@ -107,9 +105,7 @@ class UserController extends Controller
             $this->getUser()
         );
 
-        $view = $this->renderView('AppBundle:User:progress.html.twig', array_merge([
-            'statistics' => $this->get('steam_data')->getStatistics($this->getUser())
-        ], $data));
+        $view = $this->renderView('AppBundle:User:progress.html.twig', $data);
 
         if ($request->isXmlHttpRequest()) {
             return new JsonResponse([
@@ -160,9 +156,12 @@ class UserController extends Controller
             throw $this->createNotFoundException();
         }
 
+        $image = $this->get('user_image')->getShareImage($user);
+        $image = str_replace($this->container->getParameter('web_path'), '', $image);
+
         return $this->render('AppBundle:User:shared.html.twig', [
             'user'  => $user,
-            'image' => $this->get('user_image')->getShareImage($user)
+            'image' => $image
         ]);
     }
 }
