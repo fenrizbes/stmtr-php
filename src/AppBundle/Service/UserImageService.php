@@ -114,6 +114,23 @@ class UserImageService
     }
 
     /**
+     * @param string $path
+     *
+     * @return resource
+     */
+    protected function createAvatarImage($path)
+    {
+        $avatar = file_get_contents($path, false, stream_context_create([
+            'ssl' => [
+                'verify_peer'      => false,
+                'verify_peer_name' => false
+            ]
+        ]));
+
+        return imagecreatefromstring($avatar);
+    }
+
+    /**
      * @param resource $image
      * @param User $user
      * @param int $x
@@ -123,7 +140,7 @@ class UserImageService
      */
     protected function copyAvatar(&$image, User $user, $x, $y)
     {
-        $avatar = imagecreatefromjpeg($user->getAvatar());
+        $avatar = $this->createAvatarImage($user->getAvatar());
 
         imagecopy($image, $avatar, $x, $y, 0, 0, static::AVATAR_SIZE, static::AVATAR_SIZE);
 
@@ -140,7 +157,7 @@ class UserImageService
      */
     protected function copyAvatarmedium(&$image, User $user, $x, $y)
     {
-        $avatar = imagecreatefromjpeg($user->getAvatarmedium());
+        $avatar = $this->createAvatarImage($user->getAvatarmedium());
 
         imagecopy($image, $avatar, $x, $y, 0, 0, static::AVATARMEDIUM_SIZE, static::AVATARMEDIUM_SIZE);
 
