@@ -54,8 +54,6 @@ abstract class BaseUpdateCommand extends ContainerAwareCommand
     /**
      * @param InputInterface $input
      * @param OutputInterface $output
-     *
-     * @throws RuntimeException
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
@@ -66,6 +64,14 @@ abstract class BaseUpdateCommand extends ContainerAwareCommand
         $this->steamData = $this->getContainer()->get('steam_data');
         $this->checkedAt = new \DateTime();
 
+        $this
+            ->loadUser()
+            ->update()
+        ;
+    }
+
+    protected function loadUser()
+    {
         $this->user = $this->em->getRepository('AppBundle:User')->find(
             (int) $input->getArgument('steamid')
         );
@@ -74,7 +80,7 @@ abstract class BaseUpdateCommand extends ContainerAwareCommand
             throw new RuntimeException('User not found');
         }
 
-        $this->update();
+        return $this;
     }
 
     abstract protected function update();
