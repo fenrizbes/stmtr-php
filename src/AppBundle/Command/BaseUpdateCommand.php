@@ -73,7 +73,7 @@ abstract class BaseUpdateCommand extends ContainerAwareCommand
     protected function loadUser()
     {
         $this->user = $this->em->getRepository('AppBundle:User')->find(
-            (int) $input->getArgument('steamid')
+            (int) $this->input->getArgument('steamid')
         );
 
         if (!$this->user instanceof User) {
