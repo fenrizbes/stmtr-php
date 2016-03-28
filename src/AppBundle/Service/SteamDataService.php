@@ -352,7 +352,7 @@ class SteamDataService
     {
         $output = shell_exec(sprintf('ps %d', $pid));
 
-        if (count(split("\n", $output)) > 2) {
+        if (count(explode("\n", $output)) > 2) {
             return true;
         }
 

@@ -16,6 +16,8 @@
     <img src="{{ asset('bundles/app/images/ball.gif') }}" />
 
 {% else %}
+    <h2>your current rating:</h2>
+
     {{ include('AppBundle:User:result.html.twig', {
         user: app.user
     }) }}
