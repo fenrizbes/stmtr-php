@@ -1,5 +1,11 @@
 {% extends 'AppBundle::layout.html.twig' %}
 
+{% block meta %}
+    {{ parent() }}
+
+    {{ include('AppBundle::og.html.twig') }}
+{% endblock %}
+
 {% block content %}
     <div class="jumbotron">
         <h1>measure your coolness.</h1>

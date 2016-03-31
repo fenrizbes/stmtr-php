@@ -1,0 +1,27 @@
+{% spaceless %}
+    {% set siteUrl = 'http://' ~ app.request.host %}
+    {% set pageUrl = siteUrl ~ (pageUrl is defined ? pageUrl) %}
+
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="steameter.com">
+    <meta property="og:title" content="Steameter.">
+    <meta property="og:description" content="Measure your coolness.">
+    <meta property="og:locale" content="en_US">
+    <meta property="og:url" content="{{ pageUrl }}">
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Steameter.">
+    <meta name="twitter:description" content="Measure your coolness.">
+    <meta name="twitter:domain" content="steameter.com">
+    <meta name="twitter:site" content="@steameter">
+    <meta name="twitter:creator" content="@steameter">
+    <meta name="twitter:url" content="{{ pageUrl }}">
+
+    {% if imageUrl is defined %}
+        <meta property="og:image" content="{{ siteUrl ~ imageUrl }}">
+        <meta property="og:image:width" content="968">
+        <meta property="og:image:height" content="504">
+
+        <meta name="twitter:image:src" content="{{ siteUrl ~ imageUrl }}">
+    {% endif %}
+{% endspaceless %}

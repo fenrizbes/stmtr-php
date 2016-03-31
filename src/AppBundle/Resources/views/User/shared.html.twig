@@ -1,28 +1,12 @@
 {% extends 'AppBundle::layout.html.twig' %}
 
-{% set siteUrl  = 'http://' ~ app.request.host %}
-{% set pageUrl  = siteUrl ~ path('user_share', { hash: user.hash }) %}
-{% set imageUrl = siteUrl ~ image %}
-
 {% block meta %}
-    <meta property="og:type" content="website">
-    <meta property="og:site_name" content="steameter.com">
-    <meta property="og:title" content="Steameter.">
-    <meta property="og:description" content="Measure your coolness.">
-    <meta property="og:url" content="{{ pageUrl }}">
-    <meta property="og:locale" content="en_US">
-    <meta property="og:image" content="{{ imageUrl }}">
-    <meta property="og:image:width" content="968">
-    <meta property="og:image:height" content="504">
+    {{ parent() }}
 
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Steameter.">
-    <meta name="twitter:description" content="Measure your coolness.">
-    <meta name="twitter:image:src" content="{{ imageUrl }}">
-    <meta name="twitter:url" content="{{ pageUrl }}">
-    <meta name="twitter:domain" content="steameter.com">
-    <meta name="twitter:site" content="@steameter">
-    <meta name="twitter:creator" content="@steameter">
+    {{ include('AppBundle::og.html.twig', {
+        pageUrl:  path('user_share', { hash: user.hash }),
+        imageUrl: image
+    }) }}
 {% endblock %}
 
 {% block logout %}{% endblock %}
