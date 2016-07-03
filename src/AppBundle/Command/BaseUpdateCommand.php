@@ -22,17 +22,17 @@ abstract class BaseUpdateCommand extends ContainerAwareCommand
     protected $output;
 
     /**
-     * @var Doctrine\ORM\EntityManager
+     * @var \Doctrine\ORM\EntityManager
      */
     protected $em;
 
     /**
-     * @var AppBundle\Service\SteamAPIService
+     * @var \AppBundle\Service\SteamAPIService
      */
     protected $steamApi;
 
     /**
-     * @var AppBundle\Service\SteamDataService
+     * @var \AppBundle\Service\SteamDataService
      */
     protected $steamData;
 
@@ -70,6 +70,9 @@ abstract class BaseUpdateCommand extends ContainerAwareCommand
         ;
     }
 
+    /**
+     * @return $this
+     */
     protected function loadUser()
     {
         $this->user = $this->em->getRepository('AppBundle:User')->find(

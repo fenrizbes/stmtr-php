@@ -33,7 +33,8 @@ class UpdateUserGameCommand extends BaseUpdateCommand
     {
         $this->userGame = $this->steamData->getUserGame(
             $this->user,
-            (int) $this->input->getArgument('gameid')
+            (int) $this->input->getArgument('gameid'),
+            false
         );
 
         $this->game = $this->userGame->getGame();
@@ -58,6 +59,14 @@ class UpdateUserGameCommand extends BaseUpdateCommand
         $achievementsList = $this->steamApi->getGameAchievements($this->game->getGameid());
 
         foreach ($achievementsList as $achievementData) {
+            if ($achievementData['percent'] > 100) {
+                $achievementData['percent'] = 100;
+            }
+
+            if ($achievementData['percent'] < 0) {
+                $achievementData['percent'] = 0;
+            }
+
             $gameAchievement = $this->steamData->getGameAchievement($this->game, $achievementData['name'], false);
             $gameAchievement->setPercentage($achievementData['percent']);
 

@@ -2,6 +2,8 @@
 
 namespace AppBundle\Command;
 
+use AppBundle\Entity\Game;
+
 class UpdateRandomGameCommand extends UpdateUserGameCommand
 {
     protected function configure()
@@ -30,6 +32,10 @@ class UpdateRandomGameCommand extends UpdateUserGameCommand
             ->setMaxResults(1)
             ->getOneOrNullResult()
         ;
+
+        if (!$this->game instanceof Game) {
+            return;
+        }
 
         $this
             ->updateGameAchievements()

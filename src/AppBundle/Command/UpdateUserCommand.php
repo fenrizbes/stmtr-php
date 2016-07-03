@@ -15,7 +15,7 @@ class UpdateUserCommand extends BaseUpdateCommand
     }
 
     /**
-     * @throws RuntimeException
+     * @throws \RuntimeException
      */
     protected function update()
     {
